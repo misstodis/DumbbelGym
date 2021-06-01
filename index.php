@@ -13,12 +13,17 @@ require($funtionsFile);
 displayHTMLhead();
 ?>
     <div class="intro-contain ">
+        <div class="intro-video">
+            <video style="width:100%;" src="./video/background.mp4" autoplay="true" loop="true" prelead="auto">
+        </div>
         <div class="intro-text">
             <h1>DUMBBEL GYM</h1>
             <img class="img-fluid" src="./img/logo.png">
             <h2>Join with us!</h2>
         </div>
+        <div class="video-overlay"></div>
     </div>
+    
     <div class="motivate-contain">
         <h3>"Look good and feel confident.<br> Join us in our fitness website<br> to get the best bodyshape in your
             life".
@@ -31,7 +36,7 @@ displayHTMLhead();
                 <div class="CategoryText">
                     <h2>Fitness MusclesBuilding</h2>
                 </div>
-                <a href="Musclesbuiding.php"><img class="CategoryImage" src="./img/Muscles.png"></a>
+                <a href="CategoryCursus.php"><img class="CategoryImage" src="./img/Muscles.png"></a>
             </div>
             <div class="CategoryName">
                 <div class="CategoryText">

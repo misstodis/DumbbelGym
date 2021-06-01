@@ -27,7 +27,7 @@ displayHTMLhead();
                             </div>
                             <div class="form-group">
                                 <label for="password" >Password:</label><br>
-                                <input type="text" name="password" id="password" class="form-control">
+                                <input type="password" name="password" id="password" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="remember-me"><span>Remember me</span> 
@@ -38,7 +38,7 @@ displayHTMLhead();
                                 <input type="submit" name="submit" class="btn btn-info btn-md" value="login">
                             </div>
                             <div id="register-link" class="text-right">
-                                <a href="#">Register here</a>
+                                <a href="signup.php">Register here</a>
                             </div>
                             <div id="forgot-link">
                                 <a href="#">forgot password ?</a>
