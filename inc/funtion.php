@@ -21,8 +21,8 @@ function displayHTMLhead()
         </head>
 
         <body>
-            <header class="header-contain">
-                <div class="header-container">
+            <header class="header-contain" >
+                <div class="header-container" id="navbar" >
                     <div class="d-flex align-items-center">
                         <div class="logo-contain">
                             <a href="index.php"><img src="./img/logo.png"></a>
