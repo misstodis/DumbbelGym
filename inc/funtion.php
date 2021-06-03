@@ -1,59 +1,21 @@
 <?php
-// make funtion connecting to the database
-function db_connect()
+//connect to database
+function dbconnect() 
 {
-    $severname="localhost";
-    $username="root";
-    $password ="";
-    $dbname = "dumbbelgym";
-    // Create connection
-    $conn = mysqli_connect($severname, $username, $password, $dbname);
-    //check the connect to databse
-    if (!$conn) 
-    {
-        die("Can't connect :" . mysqli_connect_error());
-        exit();
-    }
-    //return databse object
-    return $conn;  
-}
-// get the categories from the data base
-function getCategories()
-{
-    // get connect to database
-    $conn = db_connect();
-    // define a empty array
-    $categories = array();
-    // define sql
-    $getCategorySQL = "SELECT * FROM `catagories`";
-    // run sql
-    $result = $conn->query($getCategorySQL) or die($conn->error);
-    // fetch result to associative array teams
-    $categories = $result->fetch_all(MYSQLI_ASSOC);
-    //close connection for safety
-    $conn -> close();
-    // return regions array
-    return $categories;
+$servername = "localhost";
+$dBUsername = "root";
+$dBPassword = "";
+$dBName = "dumbbellgym";
+
+$conn = new mysqli($servername, $dBUsername, $dBPassword, $dBName);
+
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
 }
 
-// make funtion display categ
-function displayCatagories()
-{
-    $categories = getCategories();
-    foreach($categories as $category)
-    {
-        ?>
-            <div class="CategoryName">
-                <div class="CategoryText">
-                    <h2><?php echo $category['CatagoryName'] ?></h2>
-                </div>
-                <a href="CategoryCursus.php?categoryId=<?php echo $category['CatagoryId'];?>"><img class="CategoryImage" src="./img/catagories/<?php echo $category['CatagoryImage'] ?>"></a>
-            </div>
-        <?php
-    }
+return $conn;
+
 }
-
-
 
 //make funtion display html head
 function displayHTMLhead()
@@ -183,7 +145,102 @@ function displayHTMLFooter()
     <?php
 }
 
+/*--------------------Sign Up Page Functions---------------*/
 
+function emptyInputSignup($username, $fname, $lname, $email, $pwd, $confirmpassword, $place, $postcode, $adress) {
+    $result;
+    if(empty($username) || empty($fname) || empty($lname) || empty($email) || empty($pwd) || empty($confirmpassword) || empty($place) || empty($postcode) || empty($adress))
+    {
+        $result = true;
+    }
+    else {
+        $result = false;
+    }
 
+    return $result;
+}
+
+function invalidUid($username) {
+    $result;
+    if(!preg_match("/^[a-zA-Z0-9]*$/", $username))
+    {
+        $result = true;
+    }
+    else {
+        $result = false;
+    }
+
+    return $result;
+}
+
+function invalidEmail($email) {
+    $result;
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL))
+    {
+        $result = true;
+    }
+    else {
+        $result = false;
+    }
+
+    return $result;
+}
+
+function pwdMatch($pwd, $confirmpassword) {
+    $result;
+    if($pwd !== $confirmpassword)
+    {
+        $result = true;
+    }
+    else {
+        $result = false;
+    }
+
+    return $result;
+}
+
+function uidExist($conn, $username, $email) {
+    $sql = "SELECT * FROM `users` WHERE `useruid` = ? OR `useremail` = ?;";
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)) 
+    {
+        header("Location: ../signup.php?error=stmtfailed");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "ss", $email, $username);
+    mysqli_stmt_execute($stmt);
+
+    $resultData = mysqli_stmt_get_result($stmt);
+
+    if($row = mysqli_fetch_assoc($resultData))
+    {
+        return $row;
+    }
+    else {
+        $result = false;
+        return $result;
+    }
+
+    mysqli_stmt_close($stmt);
+}
+
+function createUser($conn, $username, $fname, $lname, $email, $pwd, $place, $postcode, $adress) {
+    $sql = "INSERT INTO `users` (`useruid`, `firstname`, `lastname`, `useremail`, `password`, `userplaats`, `userpostcode`, `useradress`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)) 
+    {
+        header("Location: ../signup.php?error=stmtfailed1");
+        exit();
+    }
+
+    $hashedpwd = password_hash($pwd, PASSWORD_DEFAULT);
+
+    mysqli_stmt_bind_param($stmt, "ssssssss", $username, $fname, $lname, $email, $hashedpwd, $place, $postcode, $adress);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    header("Location: ../signup.php?error=none");
+    exit();
+}
 ?>
 
