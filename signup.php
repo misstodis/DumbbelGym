@@ -19,8 +19,12 @@ displayHTMLhead();
             <div id="login-row" class="row justify-content-center align-items-center">
                 <div id="login-column" class="col-md-6">
                     <div id="singup-box" class="col-md-12">
-                        <form id="login-form" action="" method="post">
+                        <form id="login-form" action="inc/signup.inc.php" method="post">
                             <h3 class="text-center">sign in</h3>
+                            <div class="form-group">
+                                <label for="username" >User Name:</label><br>
+                                <input type="text" name="username"  class="form-control">
+                            </div>
                             <div class="form-group">
                                 <label for="firstname" >First Name:</label><br>
                                 <input type="text" name="firstname"  class="form-control">
@@ -35,23 +39,23 @@ displayHTMLhead();
                             </div>
                             <div class="form-group">
                                 <label for="password" >Password:</label><br>
-                                <input type="text" name="password"  class="form-control">
+                                <input type="password" name="password"  class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="confirmpassword" >Confirm Password:</label><br>
-                                <input type="text" name="confirmpassword" class="form-control">
+                                <input type="password" name="confirmpassword" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="confirmpassword" >Place:</label><br>
+                                <label for="place" >Place:</label><br>
                                 <input type="text" name="place"  class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="confirmpassword" >PostCode:</label><br>
+                                <label for="postcode" >PostCode:</label><br>
                                 <input type="text" name="postcode" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="confirmpassword" >Adres:</label><br>
-                                <input type="text" name="adres" class="form-control">
+                                <label for="adress" >Adres:</label><br>
+                                <input type="text" name="adress" class="form-control">
                             </div>
                             <div class="form-group signup-btn">
                                 <input type="submit" name="submit" class="btn btn-info btn-md" value="Sign Up">
