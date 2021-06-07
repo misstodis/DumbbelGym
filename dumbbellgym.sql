@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 03 jun 2021 om 12:11
--- Serverversie: 10.4.14-MariaDB
--- PHP-versie: 7.4.9
+-- Gegenereerd op: 07 jun 2021 om 08:57
+-- Serverversie: 10.4.17-MariaDB
+-- PHP-versie: 8.0.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,23 +20,27 @@ SET time_zone = "+00:00";
 --
 -- Database: `dumbbellgym`
 --
-CREATE DATABASE IF NOT EXISTS `dumbbellgym` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `dumbbellgym`;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `catagories`
+-- Tabelstructuur voor tabel `categories`
 --
 
-DROP TABLE IF EXISTS `catagories`;
-CREATE TABLE `catagories` (
+CREATE TABLE `categories` (
   `catagoryid` int(11) NOT NULL,
-  `cursusid` int(11) NOT NULL,
-  `catagoryimage` varchar(255) NOT NULL,
   `catagoryname` varchar(255) NOT NULL,
-  `catagorydesc` text NOT NULL
+  `catagoryimage` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `categories`
+--
+
+INSERT INTO `categories` (`catagoryid`, `catagoryname`, `catagoryimage`) VALUES
+(1, 'Fitness Muscles Building', 'Muscles.png'),
+(2, 'Functional Training', 'functional.png'),
+(3, 'Cardio Session', 'carido.png');
 
 -- --------------------------------------------------------
 
@@ -44,13 +48,58 @@ CREATE TABLE `catagories` (
 -- Tabelstructuur voor tabel `cursus`
 --
 
-DROP TABLE IF EXISTS `cursus`;
 CREATE TABLE `cursus` (
   `cursusid` int(11) NOT NULL,
   `catagoryid` int(11) NOT NULL,
-  `cursusvideo` text NOT NULL,
   `cursusname` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `cursus`
+--
+
+INSERT INTO `cursus` (`cursusid`, `catagoryid`, `cursusname`) VALUES
+(1, 1, 'Chest-FMB'),
+(2, 1, 'Back-FMB'),
+(3, 1, 'Shoulder & Arm-FMB'),
+(4, 1, 'Legs-FMB'),
+(5, 2, 'Chest-FT'),
+(6, 2, 'Back-FT'),
+(7, 2, 'Shoulder & Arm-FT'),
+(8, 2, 'Legs-FT'),
+(9, 3, 'Training-CD');
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `cursus_info`
+--
+
+CREATE TABLE `cursus_info` (
+  `cursusinfoid` int(11) NOT NULL,
+  `cursusid` int(11) NOT NULL,
+  `cursusinfoname` varchar(255) NOT NULL,
+  `cursusinfoimage` varchar(255) NOT NULL,
+  `cursusinfovideo` varchar(255) NOT NULL,
+  `cursusinforeps` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `cursus_info`
+--
+
+INSERT INTO `cursus_info` (`cursusinfoid`, `cursusid`, `cursusinfoname`, `cursusinfoimage`, `cursusinfovideo`, `cursusinforeps`) VALUES
+(1, 1, 'Bench Press', 'FitnessMuscels/Chest/BenchPress.png', 'FitnessMuscels/Chest/BenchPress.mp4', ''),
+(2, 1, 'Cable Press ', 'FitnessMuscels/Chest/CablePress.png', 'FitnessMuscels/Chest/CablePress.mp4', ''),
+(3, 2, 'Barbell Rows ', '', '', ''),
+(4, 3, 'Biceps Curl Stand', '', '', ''),
+(5, 4, 'Squat ', '', '', ''),
+(6, 5, 'PushUps ', '', '', ''),
+(7, 6, 'Band Back  ', '', '', ''),
+(8, 7, 'Russian Pushup ', '', '', ''),
+(9, 8, 'Squats', '', '', ''),
+(10, 9, 'Skipping ', '', '', ''),
+(11, 1, 'DumbellPress', 'FitnessMuscels/Chest/DumbellPress.png', 'FitnessMuscels/Chest/DummbellPress.mp4', '');
 
 -- --------------------------------------------------------
 
@@ -58,7 +107,6 @@ CREATE TABLE `cursus` (
 -- Tabelstructuur voor tabel `products`
 --
 
-DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products` (
   `productid` int(11) NOT NULL,
   `productcatagoryid` int(11) NOT NULL,
@@ -74,7 +122,6 @@ CREATE TABLE `products` (
 -- Tabelstructuur voor tabel `product_catagory`
 --
 
-DROP TABLE IF EXISTS `product_catagory`;
 CREATE TABLE `product_catagory` (
   `productcatagoryid` int(11) NOT NULL,
   `p_catagoryname` varchar(255) NOT NULL
@@ -86,10 +133,8 @@ CREATE TABLE `product_catagory` (
 -- Tabelstructuur voor tabel `subscriptions`
 --
 
-DROP TABLE IF EXISTS `subscriptions`;
 CREATE TABLE `subscriptions` (
   `userid` int(11) NOT NULL,
-  `cursusid` int(11) NOT NULL,
   `substatus` varchar(255) NOT NULL,
   `subdate` date NOT NULL,
   `subprice` int(11) NOT NULL
@@ -101,7 +146,6 @@ CREATE TABLE `subscriptions` (
 -- Tabelstructuur voor tabel `users`
 --
 
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `userid` int(11) NOT NULL,
   `useruid` varchar(255) NOT NULL,
@@ -128,17 +172,24 @@ INSERT INTO `users` (`userid`, `useruid`, `firstname`, `lastname`, `password`, `
 --
 
 --
--- Indexen voor tabel `catagories`
+-- Indexen voor tabel `categories`
 --
-ALTER TABLE `catagories`
-  ADD PRIMARY KEY (`catagoryid`),
-  ADD KEY `cursusid_catagory_fk` (`cursusid`);
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`catagoryid`);
 
 --
 -- Indexen voor tabel `cursus`
 --
 ALTER TABLE `cursus`
-  ADD PRIMARY KEY (`cursusid`);
+  ADD PRIMARY KEY (`cursusid`),
+  ADD KEY `catagoryid_fk` (`catagoryid`);
+
+--
+-- Indexen voor tabel `cursus_info`
+--
+ALTER TABLE `cursus_info`
+  ADD PRIMARY KEY (`cursusinfoid`),
+  ADD KEY `cursusid_fk` (`cursusid`);
 
 --
 -- Indexen voor tabel `products`
@@ -157,7 +208,6 @@ ALTER TABLE `product_catagory`
 -- Indexen voor tabel `subscriptions`
 --
 ALTER TABLE `subscriptions`
-  ADD KEY `cursusid_fk` (`cursusid`),
   ADD KEY `userid_fk` (`userid`);
 
 --
@@ -173,16 +223,22 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT voor een tabel `catagories`
+-- AUTO_INCREMENT voor een tabel `categories`
 --
-ALTER TABLE `catagories`
-  MODIFY `catagoryid` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `categories`
+  MODIFY `catagoryid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT voor een tabel `cursus`
 --
 ALTER TABLE `cursus`
-  MODIFY `cursusid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cursusid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT voor een tabel `cursus_info`
+--
+ALTER TABLE `cursus_info`
+  MODIFY `cursusinfoid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT voor een tabel `products`
@@ -207,10 +263,16 @@ ALTER TABLE `users`
 --
 
 --
--- Beperkingen voor tabel `catagories`
+-- Beperkingen voor tabel `cursus`
 --
-ALTER TABLE `catagories`
-  ADD CONSTRAINT `cursusid_catagory_fk` FOREIGN KEY (`cursusid`) REFERENCES `cursus` (`cursusid`);
+ALTER TABLE `cursus`
+  ADD CONSTRAINT `catagoryid_fk` FOREIGN KEY (`catagoryid`) REFERENCES `categories` (`catagoryid`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Beperkingen voor tabel `cursus_info`
+--
+ALTER TABLE `cursus_info`
+  ADD CONSTRAINT `cursusid_fk` FOREIGN KEY (`cursusid`) REFERENCES `cursus` (`cursusid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Beperkingen voor tabel `products`
@@ -222,7 +284,6 @@ ALTER TABLE `products`
 -- Beperkingen voor tabel `subscriptions`
 --
 ALTER TABLE `subscriptions`
-  ADD CONSTRAINT `cursusid_fk` FOREIGN KEY (`cursusid`) REFERENCES `cursus` (`cursusid`),
   ADD CONSTRAINT `userid_fk` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`);
 COMMIT;
 
