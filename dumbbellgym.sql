@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 07 jun 2021 om 08:57
+-- Gegenereerd op: 07 jun 2021 om 09:13
 -- Serverversie: 10.4.17-MariaDB
 -- PHP-versie: 8.0.0
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `dumbbellgym`
 --
+CREATE DATABASE IF NOT EXISTS `dumbbellgym` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `dumbbellgym`;
 
 -- --------------------------------------------------------
 
