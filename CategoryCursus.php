@@ -13,64 +13,17 @@ require($funtionsFile);
 displayHTMLhead();
 ?>
     <div class="container">
-        <div class="row align-items-start">
-            <h1>chest</h1>
-            <div class="col">
-                <video style src="./video/intro-video.mp4" controls="true"></video>
-                <p>789456123 </p>
-            </div>
-            <div class="col">
-                <video style src="./video/intro-video.mp4" controls="true"></video>
-            </div>
-            <div class="col">
-                <video style src="./video/intro-video.mp4" controls="true"></video>
-            </div>
-            <div class="col">
-                <video style src="./video/intro-video.mp4" controls="true"></video>
-            </div>
-            <div class="col">
-                <video style src="./video/intro-video.mp4" controls="true"></video>
-            </div>
-            <!-- <div class="col">
-                <video style src="./video/intro-video.mp4" controls="true"></video>
-            </div>       -->
-        </div>
-        <div class="row align-items-center">
-            <h1>Back</h1>
-            <div class="col">
-            One of three columns
-            </div>
-            <div class="col">
-            One of three columns
-            </div>
-            <div class="col">
-            One of three columns
+        <div class="row justify-content-center">
+            <div class="list-group listgroup-flush">
+                <?php displayCursus(); ?>
             </div>
         </div>
-        <div class="row align-items-end">
-            <h1>Shoulders&Arms </h1>
-            <div class="col">
-            One of three columns
-            </div>
-            <div class="col">
-            One of three columns
-            </div>
-            <div class="col">
-            One of three columns
-            </div>
+         <!-- video display  -->
+        <div class="VideoCursus">
+                <video controlsList="nodownload" controls="true" id="myVideo"> <sorce src="" ></video>
+                <img src="./img/close.png" class="close" onclick="toggle();">
         </div>
-        <div class="row align-items-end">
-            <h1>Legs</h1>
-            <div class="col">
-            One of three columns
-            </div>
-            <div class="col">
-            One of three columns
-            </div>
-            <div class="col">
-            One of three columns
-            </div>
-        </div>
+        <!-- end videodisplay -->
     </div>
-
+    <script src="./js/scrip.js" type="text/javascript"></script>
 <?php displayHTMLFooter();?>

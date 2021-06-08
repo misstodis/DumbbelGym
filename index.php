@@ -32,24 +32,7 @@ displayHTMLhead();
     </div>
     <div class="category-contain">
         <div class="CategoryInfo">
-            <div class="CategoryName">
-                <div class="CategoryText">
-                    <h2>Fitness MusclesBuilding</h2>
-                </div>
-                <a href="CategoryCursus.php"><img class="CategoryImage" src="./img/Muscles.png"></a>
-            </div>
-            <div class="CategoryName">
-                <div class="CategoryText">
-                    <h2>Functional Training</h2>
-                </div>
-                <a href="#"><img class="CategoryImage" src="./img/functional.png"></a>
-            </div>
-            <div class="CategoryName">
-                <div class="CategoryText">
-                    <h2>Cardio Session</h2>
-                </div>
-                <a href="#"><img class="CategoryImage" src="./img/carido.png"></a>
-            </div>
+            <?php displayCatagories();?>
         </div>
     </div>
 <?php displayHTMLFooter();?>
