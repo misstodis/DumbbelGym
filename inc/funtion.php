@@ -17,6 +17,133 @@ return $conn;
 
 }
 
+// get the categories from the data base
+function getCategories()
+{
+    // get connect to database
+    $conn = dbconnect();
+    // define a empty array
+    $categories = array();
+    // define sql
+    $getCategorySQL = "SELECT * FROM `categories`";
+    // run sql
+    $result = $conn->query($getCategorySQL) or die($conn->error);
+    // fetch result to associative array teams
+    $categories = $result->fetch_all(MYSQLI_ASSOC);
+    //close connection for safety
+    $conn -> close();
+    // return regions array
+    return $categories;
+}
+
+// make funtion display categ
+function displayCatagories()
+{
+    $categories = getCategories();
+    foreach($categories as $category)
+    {
+        ?>
+            <div class="CategoryName">
+                <div class="CategoryText">
+                    <h2><?php echo $category['catagoryname'] ?></h2>
+                </div>
+                <a href="CategoryCursus.php?categoryid=<?php echo $category['catagoryid'];?>"><img class="CategoryImage" src="./img/catagories/<?php echo $category['catagoryimage'] ?>"></a>
+            </div>
+        <?php
+    }
+}
+//funtin to get cursus
+function getCursus()
+{
+    // get connect to database
+    $conn = dbconnect();
+    // define a empty array
+    $cursus = array();
+
+    if (isset($_GET['categoryid'])) 
+    {
+        $categoryid = $_GET['categoryid'];
+        // define sql
+       $getCursusSQL = "SELECT * FROM `cursus` LEFT JOIN `categories` ON `cursus`.`catagoryid` = `categories`.`catagoryid` WHERE `cursus`.`catagoryid` = $categoryid" ;
+       // run sql
+        $result = $conn->query($getCursusSQL) or die($conn->error);
+        // fetch result to associative array teams
+        $cursus = $result->fetch_all(MYSQLI_ASSOC);
+        //close connection for safety
+        $conn -> close();
+        // return regions array
+        return $cursus;
+    }
+    else
+    {
+        echo "</h1> There is nothing </h1>";
+    }
+}
+//make funtion display cursus
+function displayCursus()
+{
+    $cursus = getCursus();
+    ?>
+        <div class ="cursusinfo-head">
+            <h1> <?php echo $cursus[0]['catagoryname']?>  </h1>
+            <a href="#" onclick="toggle(); playVideo('./video/intro-video.mp4');"><i class="bi bi-youtube"> Intro Video</i></a>
+        </div>
+            <?php
+                foreach($cursus as $cursu)
+                {
+                    ?>
+                    <div class="card border-0 mb-3 shadow">
+                        <div class="card-body border-bottom">
+                            <h5 class="card-title mb-0"><?php echo $cursu['cursusname']?></h5>
+                        </div>
+                        <div class="list-group">
+                                <!-- give cursusid from getCursus() to funtion getCursusInfo and put in variable -->
+                                <?php $cursusinfos = getCursusInfo($cursu['cursusid']);
+                                    // make a loop to print out the infomation
+                                    // call variable as other name to loop
+                                    foreach($cursusinfos as $cursusinfo)
+                                    {
+                                        ?>
+                                            <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="#" onclick="toggle(); playVideo('./video/<?php echo $cursusinfo['cursusinfovideo'] ?>');" >
+                                                <div class="cursus-info">
+                                                    <small class ="text-muted mb-0"><?php echo $cursusinfo['cursusinfoname'] ?></small><br>
+                                                    <img class="mb-0"src="./video/<?php echo $cursusinfo['cursusinfoimage'] ?>">
+                                                </div>
+                                                <div>
+                                                    <h6> <?php echo $cursusinfo['cursusinforeps']; ?> </h6>
+                                                </div>
+                                            </a>                                        
+                                        <?php
+                                    }
+                                ?>
+                        </div>
+                    </div>
+                    <?php                 
+                }
+            ?>
+
+    <?php
+}
+// make funtion this get cursusinfo from database
+function getCursusInfo($cursusid)
+{
+        // get connect to database
+        $conn = dbconnect();
+        // define a empty array
+        $cursusInfo = array();
+        // define sql
+        $getCursusInfoSQL = "SELECT * FROM `cursus_info` JOIN cursus ON cursus_info.cursusid = cursus.cursusid WHERE cursus.cursusid = $cursusid";
+        // run sql
+        $result = $conn->query($getCursusInfoSQL) or die($conn->error);
+        // fetch result to associative array teams
+        $cursusInfo = $result->fetch_all(MYSQLI_ASSOC);
+        //close connection for safety
+        $conn -> close();
+        // return regions array
+        return $cursusInfo;
+}
+
+
 //make funtion display html head
 function displayHTMLhead()
 {
