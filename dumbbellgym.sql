@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 07 jun 2021 om 09:13
+-- Gegenereerd op: 08 jun 2021 om 11:22
 -- Serverversie: 10.4.17-MariaDB
 -- PHP-versie: 8.0.0
 
@@ -91,17 +91,42 @@ CREATE TABLE `cursus_info` (
 --
 
 INSERT INTO `cursus_info` (`cursusinfoid`, `cursusid`, `cursusinfoname`, `cursusinfoimage`, `cursusinfovideo`, `cursusinforeps`) VALUES
-(1, 1, 'Bench Press', 'FitnessMuscels/Chest/BenchPress.png', 'FitnessMuscels/Chest/BenchPress.mp4', ''),
+(1, 1, 'Bench Press', 'FitnessMuscels/Chest/BenchPress.png', 'FitnessMuscels/Chest/BenchPress.mp4', '3 reps X 12 sets'),
 (2, 1, 'Cable Press ', 'FitnessMuscels/Chest/CablePress.png', 'FitnessMuscels/Chest/CablePress.mp4', ''),
-(3, 2, 'Barbell Rows ', '', '', ''),
-(4, 3, 'Biceps Curl Stand', '', '', ''),
-(5, 4, 'Squat ', '', '', ''),
-(6, 5, 'PushUps ', '', '', ''),
-(7, 6, 'Band Back  ', '', '', ''),
-(8, 7, 'Russian Pushup ', '', '', ''),
-(9, 8, 'Squats', '', '', ''),
-(10, 9, 'Skipping ', '', '', ''),
-(11, 1, 'DumbellPress', 'FitnessMuscels/Chest/DumbellPress.png', 'FitnessMuscels/Chest/DummbellPress.mp4', '');
+(3, 2, 'Barbell Rows ', 'FitnessMuscels/Back/BarbellRows.png', 'FitnessMuscels/Back/BarbellRows.mp4', ''),
+(4, 3, 'Biceps Curl Stang', 'FitnessMuscels/ShouldersArms/BicepsCurlStang.png', 'FitnessMuscels/ShouldersArms/BicepsCurlStang.mp4', ''),
+(5, 4, 'Barbell Squat ', 'FitnessMuscels/Legs/BarbellSquat.png', 'FitnessMuscels/Legs/BarbellSquat.mp4', ''),
+(6, 5, 'Push Ups ', 'FunctionalTraining/Chest/PushUps.png', 'FunctionalTraining/Chest/PushUps.mp4', ''),
+(7, 6, 'Band Back  ', 'FunctionalTraining/Back/Bandback.png', 'FunctionalTraining/Back/Bandback.mp4', ''),
+(8, 7, 'Russian Pushup ', 'FunctionalTraining/ShouldersArms/RussianPushUp.png', 'FunctionalTraining/ShouldersArms/RussianPushUp.mp4', ''),
+(9, 8, 'Squats', 'FunctionalTraining/Legs/Squats.png', 'FunctionalTraining/Legs/Squats.mp4', ''),
+(10, 9, 'Skipping ', 'CardioSession/training/Skipping.png', 'CardioSession/training/Skipping.mp4', ''),
+(11, 1, 'Dumbell Press', 'FitnessMuscels/Chest/DumbellPress.png', 'FitnessMuscels/Chest/DummbellPress.mp4', ''),
+(12, 2, 'Seated Cable Row', 'FitnessMuscels/Back/SeatedCableRow.png', 'FitnessMuscels/Back/SeatedCableRow.mp4', ''),
+(13, 2, 'Lat Pulldown', 'FitnessMuscels/Back/LatPulldown.png', 'FitnessMuscels/Back/LatPulldown.mp4', ''),
+(14, 3, 'Shoulder Press', 'FitnessMuscels/ShouldersArms/ShoulderPress.png', 'FitnessMuscels/ShouldersArms/ShoulderPress.mp4', ''),
+(15, 3, 'Triceps Pushdown', 'FitnessMuscels/ShouldersArms/TricepsPushdown.png', 'FitnessMuscels/ShouldersArms/TricepsPushdown.mp4', ''),
+(16, 4, 'Leg Extension', 'FitnessMuscels/Legs/LegExtension.png', 'FitnessMuscels/Legs/LegExtension.mp4', ''),
+(17, 4, 'Standing Calf Raises', 'FitnessMuscels/Legs/StandingCalfRaises.png', 'FitnessMuscels/Legs/StandingCalfRaises.mp4', ''),
+(18, 5, 'Diamond Pushup', 'FunctionalTraining/Chest/DiamondPushup.png', 'FunctionalTraining/Chest/DiamondPushup.mp4', ''),
+(19, 5, 'Decline Pushup', 'FunctionalTraining/Chest/DeclinePushup.png', 'FunctionalTraining/Chest/DeclinePushup.mp4', ''),
+(20, 6, 'Flex Hang', 'FunctionalTraining/Back/FlexHang.png', 'FunctionalTraining/Back/FlexHang.mp4', ''),
+(21, 6, 'Pull Up', 'FunctionalTraining/Back/PullUp.png', 'FunctionalTraining/Back/PullUp.mp4', ''),
+(22, 8, 'Jumping Squats', 'FunctionalTraining/Legs/JumpingSquats.png', 'FunctionalTraining/Legs/JumpingSquats.mp4', ''),
+(23, 8, 'Walking Lunges', 'FunctionalTraining/Legs/WalkingLunges.png', 'FunctionalTraining/Legs/WalkingLunges.mp4', ''),
+(26, 7, 'Dumbbell Band Biceps Currells', 'FunctionalTraining/ShouldersArms/DumbbellBandBicepsCurrells.png', 'FunctionalTraining/ShouldersArms/DumbbellBandBicepsCurrells.mp4', ''),
+(27, 7, 'Pushup Press', 'FunctionalTraining/ShouldersArms/PushUpPress.png', 'FunctionalTraining/ShouldersArms/PushUpPress.mp4', ''),
+(28, 9, 'Benchdip', 'CardioSession/training/Benchdip.png', 'CardioSession/training/Benchdip.mp4', ''),
+(29, 9, 'Bicycle Crunch', 'CardioSession/training/BicycleCrunch.png', 'CardioSession/training/BicycleCrunch.mp4', ''),
+(30, 9, 'Elbow Plank', 'CardioSession/training/ElbowPlank.png', 'CardioSession/training/ElbowPlank.mp4', ''),
+(31, 9, 'Foot To Foot Cranch', 'CardioSession/training/FootToFootCranch.png', 'CardioSession/training/FootToFootCranch.mp4', ''),
+(32, 9, 'Leg Raises Abs', 'CardioSession/training/LegRaisesAbs.png', 'CardioSession/training/LegRaisesAbs.mp4', ''),
+(33, 9, 'Press Up', 'CardioSession/training/PressUP.png', 'CardioSession/training/PressUP.mp4', ''),
+(34, 9, 'Pullup Bar', 'CardioSession/training/PullUpBar.png', 'CardioSession/training/PullUpBar.mp4', ''),
+(35, 9, 'Raised Leg Plank', 'CardioSession/training/RaisedLegPlank.png', 'CardioSession/training/RaisedLegPlank.mp4', ''),
+(36, 9, 'Scissors Ab', 'CardioSession/training/ScissorsAb.png', 'CardioSession/training/ScissorsAb.mp4', ''),
+(37, 9, 'Sitting Twist', 'CardioSession/training/SittingTwist.png', 'CardioSession/training/SittingTwist.mp4', ''),
+(38, 9, 'StepUp With Dumbbell', 'CardioSession/training/StepUpWithDumbbell.png', 'CardioSession/training/StepUpWithDumbbell.mp4', '');
 
 -- --------------------------------------------------------
 
@@ -240,7 +265,7 @@ ALTER TABLE `cursus`
 -- AUTO_INCREMENT voor een tabel `cursus_info`
 --
 ALTER TABLE `cursus_info`
-  MODIFY `cursusinfoid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `cursusinfoid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT voor een tabel `products`
