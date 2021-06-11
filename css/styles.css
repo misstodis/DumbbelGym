@@ -221,18 +221,13 @@
         padding-top: 17em;
     }
 }
-
-/* ---------------------- --------------------------*/
-/* ---------------------- footer-contain --------------------------*/
-/* ---------------------- --------------------------*/
-footer
-{
-    background-color:  #C5C6C7;
-}
-
 /* mobile: Width < 740px */
 @media only Screen and (max-width: 46.1875em)
 {
+    .intro-text h1
+    {
+        color: red;
+    }
     .logo-contain
     {
         width: 60%;
@@ -436,6 +431,14 @@ footer
     }
 }
 
+
+/* ---------------------- --------------------------*/
+/* ---------------------- footer-contain --------------------------*/
+/* ---------------------- --------------------------*/
+footer
+{
+    background-color:  #C5C6C7;
+}
 /* -------------------------------------------------------------------------------
 -----------------------login-page----------------------------------
 ------------------------------------------------------------------------------------- */
@@ -502,15 +505,65 @@ footer
     border-bottom: 1px solid #45A29E;
 }
 
-.col video
+
+/* mobile: Width < 740px */
+@media only Screen and (max-width: 46.1875em)
 {
-    width: 20em;
+    #login .container #login-row #login-column #login-box
+    {
+        width: 20em; 
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+    }
+    .login-card
+    {
+        height: 80vh;
+    }
 }
-.col
+
+/* mobile:  width =< 320px */
+@media only Screen and (max-width: 20em)
 {
-    border: 1px solid;
+    #login .container #login-row #login-column #login-box
+    {
+        width: 18em;
+    }
+    .login-card
+    {
+        height: 90vh;
+    }
 }
-#singup-box
+/* tablet: width  >= 740px and width < 1024px */
+@media only Screen and (min-width: 46.25em) and (max-width: 64em)
+{
+    .login-card
+    {
+        height: 50vh;
+    }
+    #login-box
+    {
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+    }
+    #login-column
+    {
+        width: 80%;
+    }
+}
+
+/* -------------------------------------------------------------------------------
+-----------------------signup-page----------------------------------
+------------------------------------------------------------------------------------- */
+.signup-card
+{
+    height: 121vh;
+    background: linear-gradient(to right, rgba(102, 252, 241,0.5) 10%,rgba(69, 162, 158,0.4) 60%);
+}
+#signup .container #signup-row #signup-column #signup-box 
 {
     width: 32rem;
     height: 42rem;
@@ -522,9 +575,93 @@ footer
     overflow: hidden;
     margin-top: 8em;
 }
+#signup .container #signup-row #signup-column #signup-box:before {
+    content: "";
+    position: absolute;
+    background: inherit;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: inset 0 0 2000px rgba(197, 198, 199, .5);
+    filter: blur(10px);
+    margin: -20px;
+}
+#signup-form
+{
+    margin: 10px;
+}
+#signup-form h3
+{
+    color:  #1F2833;
+}
+#singup-box
+{
+    width: 32rem;
+    height: 42rem;
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2); 
+    border-radius: 5px;
+    position: relative;
+    background: inherit;
+    overflow: hidden;
+    margin-top: 8em;
+}
 .signup-btn
 {
     margin-top: 1em;
+}
+/* mobile: Width < 740px */
+@media only Screen and (max-width: 46.1875em)
+{
+    #signup .container #signup-row #signup-column #signup-box
+    {
+        width: 21rem;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        margin-top: 1.5em;
+    }
+    .signup-card
+    {
+        height: 110vh;
+    }
+}
+/* mobile:  width =< 320px */
+@media only Screen and (max-width: 20em)
+{
+    #signup .container #signup-row #signup-column #signup-box
+    {
+        width: 18em;
+    }
+    .signup-card
+    {
+        height: 125vh;
+    }
+}
+/* tablet: width  >= 740px and width < 1024px */
+@media only Screen and (min-width: 46.25em) and (max-width: 64em)
+{
+    .signup-card
+    {
+        height: 100vh;
+    }
+    #singup-box
+    {
+        width: 35em;
+    }
+    #signup-box
+    {
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+    }
+    #signup-column
+    {
+        width: 80%;
+    }
 }
 
 /* ---------------------------------------------------------------------
@@ -574,6 +711,10 @@ footer
     filter: invert(1);
     max-width: 3em;
 }
+.close:hover
+{
+    max-width: 3.5em;
+}
 .cursus-info img
 {
     width: 10em;
@@ -581,7 +722,7 @@ footer
 }
 .cursusinfo-head a
 {
-    border: 1px solid #1F2833;
+    border: 1px solid #C5C6C7;
     padding: 3px;
     text-decoration: none;
     color: #C5C6C7;
@@ -597,115 +738,126 @@ footer
 {
     color: #1F2833;
 }
-
-/* -------------------------------------------------------------------------------
------------------------shopping-cart----------------------------------
-------------------------------------------------------------------------------------- */
-.spCart-container{
-    max-width: 1200px;
-    margin: 0 auto;
-    margin-bottom: 4em;
-
-}
-
-.spCart-container > h1{
-    padding: 20px 0;
-}
-
-.product{
-    display: flex;
-    width: 100%;
-    height: 225px;
-    overflow: hidden;
-    border: 1px solid silver;
-    margin-bottom: 20px;
-} 
-
-.product :hover{
-    border: none;
-    box-shadow: 2px 2px 4px rgb(0,0,0,0.2);
-    transform: scale(1.01);
-}
-
-
-
-.product > img:hover{
-    transform: scale(1.04);
-}
-
-.products
+/* ---------------------------------------------------------------------
+-----------------------------------product------------------------
+-------------------------------------------------------------------------- */
+.product-contain
 {
-    background-color: #C5C6C7;
-    width: 100%;
+    margin-bottom: 2em;
 }
-
-.product-info{
-    padding: 20px;
-    width: 100%; 
-    position: relative; 
-}
-
-.product-name, .product-price, .product-offer{
-    margin-bottom: 20px;
-}
-
-.product-remove{
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    padding: 10px 25px;
-    background-color: #45A29E;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.product-remove:hover{
-    background-color: white;
-    color: #45A29E;
-    font-weight: 600;
-    border: 1px solid green;
-}
-
-.product-quantity > input{
-    width: 40px;
-    
-
-}
-
-.bi{
-    margin-right: 5px;
-}
-
-.cart-total{
-    flex: 0.25;
-    margin-left: 70%;
-    padding: 30px;
-    height: 240px;
-    border: 1px solid silver;
-    border-radius: 5px;
-}
-
-.cart-total p{
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 30px;
-    font-size: 20px;
-    margin-bottom: 1em;
-}
-
-.cart-total a{
-    display: block;
+.product-nav
+{
     text-align: center;
-    height: 40px;
-    line-height: 40px;
-    background-color: #45A29E;
-    color: silver;
+    padding-top: 1.2em;
+    background: linear-gradient(to right, rgba(102, 252, 241,0.5) 43%,rgba(69, 162, 158,0.4) 60%);
+}
+.product-category
+{
+    background-color: #1F2833;
+}
+.product-category a
+{
     text-decoration: none;
-  
+    font-size: 1.5em;
+    color:  #C5C6C7;
 }
-
-.cart-total a:hover{
-    background-color:  #66FCF1;
+.product-category a:hover
+{
+    transition: 0.8s;
+    color:  #C5C6C7;
+    border-bottom: 1px solid  #C5C6C7;
 }
-
+.product-info
+{
+    margin-top: 1.5em;
+}
+.product-grid
+{
+    text-align: center;
+    transition: all 0.5s;
+}
+.product-grid:hover
+{
+    box-shadow: 0px 5px 18px rgba(102, 252, 241,0.7);
+}
+.product-grid .product-image
+{
+    position: relative;
+    overflow: hidden;
+}
+.product-grid .product-image a.image
+{ 
+    display: block; 
+}
+.product-grid .product-image img{
+    width: 100%;
+    height: auto;
+}
+.product-image .pic-1
+{
+    opacity: 1;
+    backface-visibility: hidden;
+    transition: all 0.5s;
+}
+.product-grid:hover .product-image .pic-1
+{ 
+    opacity: 0; 
+}
+.product-image .pic-2{
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all 0.5s;
+}
+.product-grid:hover .product-image .pic-2
+{ 
+    opacity: 1; 
+}
+.product-grid .product-size{
+    background: rgba(197, 198, 199,0.8);
+    width: 100%;
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    transition: all .2s ease-in-out 0s;
+}
+.product-grid:hover .product-size{
+    opacity: 1;
+    bottom: 0;
+    transition: 0.5s;
+}
+.product-grid .product-size
+{
+    list-style: none;
+}
+.product-grid .size{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+}
+.product-grid .size li{
+    color:  #0B0C10;
+    font-size: 20px;
+    margin-left: 1.8em;
+}
+.product-grid .product-content .product-title a
+{
+    text-decoration: none;
+    color: #1F2833;
+}
+.product-grid .product-content .product-title a:hover
+{
+    border-bottom: 1px solid #1F2833;
+}
+.product-grid .product-content .product-price
+{
+    font-size: 1.3em;
+}
+@media only screen and (max-width:990px){
+    .product-grid{ margin-bottom: 40px; }
+}
