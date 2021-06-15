@@ -1,4 +1,16 @@
 <?php
+session_start();
+/*function init() {
+    // start or resum session
+    session_start();
+    // check shopping cart
+    if(!isset($_SESSION['shoppingCart']))
+    {
+        // create empty cart
+        $_SESSION['shoppingCart'] = array();
+    }
+}*/
+
 // make funtion connecting to the database
 function dbconnect()
 {
