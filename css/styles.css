@@ -861,3 +861,181 @@ footer
 @media only screen and (max-width:990px){
     .product-grid{ margin-bottom: 40px; }
 }
+/* -------------------------------------------------------------------------------
+-----------------------account-page----------------------------------
+------------------------------------------------------------------------------------- */
+.account-main
+{
+    display: flex;
+}
+.account-box1
+{
+    width: 22rem;
+    height: auto ;
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2); 
+    position: relative;
+    margin: auto;
+    padding-left: 2em;
+    padding-top: 1em;
+    margin-bottom: 2em;
+}
+.account-box2
+{
+    width: 22rem;
+    height: auto;
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2); 
+    position: relative;
+    margin: auto;
+    padding-left: 2em;
+    padding-top: 1em;
+    margin-bottom: 2em;
+}
+.account-box3
+{
+    width: 22rem;
+    height: auto;
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2); 
+    position: relative;
+    margin: auto;
+    padding-left: 2em;
+    padding-top: 1em;
+    margin-bottom: 2em;
+}
+.log-out:hover
+{
+    transition: 0.5s;
+    background-color: #C5C6C7;
+}
+.acount-test .log-out
+{
+    border: 1px solid #1F2833;
+    font-size: 13px;
+}
+.acount-test
+{
+    text-align: center;
+}
+.account-contain
+{
+    margin-bottom: 2em;
+}
+/* mobile:  width =< 320px */
+@media only Screen and (max-width: 20em)
+{
+    .account-main
+    {
+        display: block;
+    }
+    .account-box1
+    {
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+    }
+    .account-box2
+    {
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+    }
+    .account-box3
+    {
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+    }
+}
+/* tablet: width  >= 740px and width < 1024px */
+@media only Screen and (min-width: 46.25em) and (max-width: 64em)
+{
+    .account-main
+    {
+        /* display: block; */
+        align-items: center;
+        text-align: center;
+    }
+    .account-box1
+    {
+        margin: 0;
+
+    }
+    .account-box2
+    {
+        margin: 0;
+    }
+    .account-box3
+    {
+        margin: 0;
+    }
+}
+/* mobile: Width < 740px */
+@media only Screen and (max-width: 46.1875em)
+{
+    .account-main
+    {
+        display: block;
+        align-items: center;
+        
+    }
+    .account-box1
+    {
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+    }
+    .account-box2
+    {
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+    }
+    .account-box3
+    {
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+    }
+}
+/* mobile:  width => 320px */
+@media only Screen and (max-width: 20em)
+{
+    .account-main
+    {
+        display: block;
+        align-items: center;
+        
+    }
+    .account-box1
+    {
+        padding: 1em;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+    }
+    .account-box2
+    {
+        padding: 1em;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+    }
+    .account-box3
+    {
+        padding: 1em;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+    }
+}
