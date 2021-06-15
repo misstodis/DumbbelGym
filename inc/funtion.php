@@ -1,16 +1,5 @@
 <?php
 session_start();
-/*function init() {
-    // start or resum session
-    session_start();
-    // check shopping cart
-    if(!isset($_SESSION['shoppingCart']))
-    {
-        // create empty cart
-        $_SESSION['shoppingCart'] = array();
-    }
-}*/
-
 // make funtion connecting to the database
 function dbconnect()
 {
@@ -225,7 +214,7 @@ function displayProductCategories()
                                     <div class="product-image">
                                         <a href="productdetail.html" class="image">
                                             <img class="pic-1" src="./img/<?php echo $poduct["productimg"] ?>">
-                                            <img class="pic-2" src="./img/Clothes2.png">
+                                            <img class="pic-2" src="./img/<?php echo $poduct["productimg2"] ?>">
                                         </a>
                                         <!-- if there is clothes then show the size-->
                                         <?php                     
@@ -280,7 +269,7 @@ function displayHTMLhead()
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Dumbel Gym</title>
-            <link rel="stylesheet" href="css/style.css">
+            <link rel="stylesheet" href="css/styles.css">
             <!-- connect to bootrap cs -->
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
                 integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
@@ -396,6 +385,66 @@ function displayHTMLFooter()
         </html>
     <?php
 }
+
+function uploadFiles($uploadedFiles)
+{
+    $files = array();
+    $errors = array();
+
+    foreach($uploadedFiles as $key => $values)
+    {
+        foreach($values as $index => $value)
+        {
+            $files[$index][$key] = $value;
+        }
+    }
+    // maken nieuw folder met naam "uploadfile" + datum
+    $uploadPath = "./uploads/". date('d-m-Y',time());
+    if(!is_dir($uploadPath))
+    {
+        mkdir($uploadPath,0777,true);
+    }
+    foreach( $files as $file)
+    {
+        $file = validateUploadFile($file, $uploadPath);
+        if($file != false)
+        {
+            move_uploaded_file($file["tmp_name"], $uploadPath . "/" . $file["name"]);
+        }
+        else
+        {
+            $errors[] = "the file". basename($file["name"]). "isn't valid.";
+        }
+    }
+    return $errors;
+}
+
+function validateUploadFile($file, $uploadPath)
+{
+    // controleren of er de file is groter dan geaccepterende file Capaciteit
+    if ($file['size'] > 2 * 1024 * 1024) // max upload is 2Mb = 2 * 1024kb * 1024 bite
+    {
+        return false;
+    }
+    // checken of er file is toestand
+    $validType = array("jpg","jpeg","png","bmp","mp4");
+    $fileType = substr($file['name'], strrpos($file['name'],".") + 1);
+    if(!in_array($fileType, $validType))
+    {
+        return false;
+    }
+    //check als er al een file met zelfde naam bestaat ? als er een bestaat dan veranderen de naam
+    $num = 1;
+    $fileName = substr($file['name'], 0, strrpos($file['name'], "."));
+    while (file_exists($uploadPath . '/' . $fileName . '.' . $fileType)) {
+        $fileName = $fileName . "(" . $num . ")";
+        $num++;
+    }
+    $file['name'] = $fileName . '.' . $fileType;
+    return $file;
+}
+
+
 
 /*--------------------Sign Up Page Functions---------------*/
 
@@ -625,7 +674,6 @@ function LoginErrorCheck()
     echo "</pre>";
     if($exit) die("done");
 }*/
-
 
 ?>
 
