@@ -1234,7 +1234,11 @@ input:forcus
     cursor: pointer;
     border-radius: 5px;
 }
-
+.product-remove a
+{
+    text-decoration: none;
+    color: white;
+}
 .product-remove:hover{
     background-color: white;
     color: #45A29E;
