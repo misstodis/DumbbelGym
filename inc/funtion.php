@@ -1,20 +1,43 @@
-// make funtion connecting to the database
-function dbconnect()
+<?php
+function init() 
 {
-    $severname="localhost";
-    $username="root";
-    $password ="";
-    $dbname = "dumbbellgym";
-    // Create connection
-    $conn = mysqli_connect($severname, $username, $password, $dbname);
-    //check the connect to databse
-    if (!$conn) 
+    // start or resum session
+    session_start();
+    // check shopping cart
+    if(!isset($_SESSION['shoppingCart']))
     {
-        die("Can't connect :" . mysqli_connect_error());
-        exit();
+        // create empty cart
+        $_SESSION['shoppingCart'] = array();
     }
-    //return databse object
-    return $conn;  
+    if(!isset($_SESSION['user']))
+    {
+        // create empty user array
+        $_SESSION['user'] = array();
+    }
+
+    if(!isset($_SESSION['user']["isUserLoggedIn"]))
+    {
+        $_SESSION['user']["isUserLoggedIn"] = false;
+    }
+}
+
+init();
+//connect to database
+function dbconnect() 
+{
+    $servername = "localhost";
+    $dBUsername = "root";
+    $dBPassword = "";
+    $dBName = "dumbbellgym";
+
+    $conn = new mysqli($servername, $dBUsername, $dBPassword, $dBName);
+
+    if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+    }
+
+    return $conn;
+
 }
 // get the categories from the data base
 function getCategories()
@@ -297,10 +320,27 @@ function displayHTMLhead()
                         <div class="logo-contain">
                             <a href="index.php"><img src="./img/logo.png"></a>
                         </div>
-                        <div class="login-contain">
-                            <a href="login.php" class="btn-login"><i class="bi bi-person-circle"></i></a>
-                        </div>
-
+                        <?php
+                        if (isLoggedIn())
+                        {
+                            ?>
+                            <div class="login-contain">
+                                <a class="btn-login" href="inc/logout.inc.php" onclick="return confirm('Are you sure you want to log out')"><i class="bi bi-box-arrow-right"></i></a>
+                            </div>
+                            <div class="login-contain">
+                                <a class="btn-login" href="account.php"><i class="bi bi-person-circle"></i></a>
+                            </div>
+                            <?php
+                        }
+                        else
+                        {
+                            ?>
+                            <div class="login-contain">
+                                <a href="login.php" class="btn-login"><i class="bi bi-person-circle"></i></a>
+                            </div>
+                            <?php
+                        }
+                        ?>
                         <div class="shoping-contain">
                             <a href="#" id="shoping-car"><i class="bi bi-cart"></i></a>
                         </div>
@@ -501,3 +541,273 @@ function validateUploadFile($file, $uploadPath)
     $file['name'] =  $fileName . '.' . $fileType;
     return $file;
 }
+
+/*--------------------Sign Up Page Functions---------------*/
+
+function emptyInputSignup($username, $fname, $lname, $email, $pwd, $confirmpassword, $place, $postcode, $adress) 
+{
+    $result;
+    if(empty($username) || empty($fname) || empty($lname) || empty($email) || empty($pwd) || empty($confirmpassword) || empty($place) || empty($postcode) || empty($adress))
+    {
+        $result = true;
+    }
+    else {
+        $result = false;
+    }
+
+    return $result;
+}
+
+function invalidUid($username) 
+{
+    $result;
+    if(!preg_match("/^[a-zA-Z0-9]*$/", $username))
+    {
+        $result = true;
+    }
+    else {
+        $result = false;
+    }
+
+    return $result;
+}
+
+function invalidEmail($email) 
+{
+    $result;
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL))
+    {
+        $result = true;
+    }
+    else {
+        $result = false;
+    }
+
+    return $result;
+}
+
+function pwdMatch($pwd, $confirmpassword) 
+{
+    $result;
+    if($pwd !== $confirmpassword)
+    {
+        $result = true;
+    }
+    else {
+        $result = false;
+    }
+
+    return $result;
+}
+
+
+function uidExist($conn, $username, $email) 
+{
+    $sql = "SELECT * FROM `users` WHERE `useruid` = ? OR `useremail` = ?;";
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)) 
+    {
+        header("Location: ../signup.php?error=stmtfailed");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "ss", $email, $username);
+    mysqli_stmt_execute($stmt);
+
+    $resultData = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_assoc($resultData))
+    {
+        return $row;
+    }
+    else {
+        $result = false;
+        return $result;
+    }
+
+    mysqli_stmt_close($stmt);
+}
+
+//Create user and insert their information into the database.
+function createUser($conn, $username, $fname, $lname, $email, $pwd, $place, $postcode, $adress) 
+{
+    $sql = "INSERT INTO `users` (`useruid`, `firstname`, `lastname`, `useremail`, `password`, `userplaats`, `userpostcode`, `useradress`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)) 
+    {
+        header("Location: ../signup.php?error=stmtfailed1");
+        exit();
+    }
+
+    //Encrypt the password
+    $hashedpwd = password_hash($pwd, PASSWORD_DEFAULT);
+
+    mysqli_stmt_bind_param($stmt, "ssssssss", $username, $fname, $lname, $email, $hashedpwd, $place, $postcode, $adress);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    header("Location: ../signup.php?error=none");
+    exit();
+}
+
+//printing for signup errors 
+function SignupErrorCheck()
+{
+    if (isset($_GET["error"]))
+    {
+        if ($_GET["error"] == "emptyInputSignup")
+        {
+            echo "<p>Fill in all the fields</p>";
+        }
+
+        else if ($_GET["error"] == "invaliduid")
+        {
+            echo "<p>The username is not valid</p>";
+        }
+
+        else if ($_GET["error"] == "invalidEmail")
+        {
+            echo "<p>The email is not valid</p>";
+        }
+
+        else if ($_GET["error"] == "passwordDontmatch")
+        {
+            echo "<p>The passwords don't match</p>";
+        }
+
+        else if ($_GET["error"] == "usernametaken")
+        {
+            echo "<p>This username is already taken</p>";
+        }
+
+        else if ($_GET["error"] == "stmtfailed")
+        {
+            echo "<p>Something went wrong!!, try again</p>";
+        }
+
+        else if ($_GET["error"] == "usernametaken")
+        {
+            echo "<p>This username is already taken</p>";
+        }
+
+        else if ($_GET["error"] == "none")
+        {
+            echo "<p>You have signed up!</p>";
+        }
+    }
+}
+
+/*--------------------Login Page Functions---------------*/
+
+//check for empty fields
+function emptyInputLogin($username, $pwd) 
+{
+    $result;
+    if(empty($username) || empty($pwd))
+    {
+        $result = true;
+    }
+    else {
+        $result = false;
+    }
+
+    return $result;
+}
+
+//check for the exictence of the username and if the password is correct
+function loginUser($conn, $username, $pwd)
+{
+    $uidExist = uidExist($conn, $username, $username);
+
+    if ($uidExist == false)
+    {
+        header("Location: ../login.php?error=wronglogin");
+        exit();
+    }
+
+    $pwdHashed = $uidExist['password'];
+    $checkPwd = password_verify($pwd, $pwdHashed);
+
+    if ($checkPwd === false)
+    {
+        header("Location: ../login.php?error=wronglogin");
+        exit();
+    }
+
+    else if ($checkPwd === true)
+    {
+        // store the user info in session key user
+        $_SESSION["user"] = $uidExist;
+        // add new key isUserLoggedIn in user
+        $_SESSION['user']["isUserLoggedIn"] = true;
+
+        header("location: ../index.php");
+        exit();
+    }
+}
+
+//login errors check
+function LoginErrorCheck()
+{
+    if(isset($_GET["error"]))
+    {
+        if ($_GET["error"] == "emptyInput")
+        {
+            echo "<p>Fill in all the fields</p>";
+        }
+
+        else if ($_GET["error"] == "wronglogin")
+        {
+            echo "<p>The password or the username are incorrect! Please try again</p>";
+        }
+    }
+}
+
+//check if the user is logged in
+function isLoggedIn()
+{
+    if($_SESSION['user']["isUserLoggedIn"] == true)
+    {
+        return true;
+    }
+    return false;
+}
+
+//debuggin function
+function myDump($varTodump, $exit = false, $varName = "", $file = false, $line = false)
+{
+    ?>
+    <style>
+    pre {
+        background:#f1f1f1;
+        color:#000;
+        width: 80%;
+        border: 1px solid #000;
+        padding: 5px;
+    }
+    div.myDump
+    {
+        background:#f1f1f1;
+        color:#000;
+        width: 80%;
+        border: 1px solid #000;
+        padding: 5px;
+    }
+    </style>
+    <div class="myDump">
+    <?php
+    if($file)
+    {
+        echo "<h4>File : " . $file . "</h4>";
+    }
+    if($line)
+    {
+        echo "<h4>Line : " . $line . "</h4>";
+    }
+    echo "<pre>";
+    var_dump($varTodump);
+    echo "</pre>";
+    if($exit) die("done</div>");
+    echo "</div>";
+}
+
+?>
