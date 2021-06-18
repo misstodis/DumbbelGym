@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 08 jun 2021 om 11:22
+-- Gegenereerd op: 18 jun 2021 om 09:06
 -- Serverversie: 10.4.17-MariaDB
 -- PHP-versie: 8.0.0
 
@@ -140,8 +140,23 @@ CREATE TABLE `products` (
   `productname` varchar(255) NOT NULL,
   `productprice` varchar(255) NOT NULL,
   `productimg` varchar(255) NOT NULL,
+  `productimg2` varchar(255) NOT NULL,
   `productdesc` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `products`
+--
+
+INSERT INTO `products` (`productid`, `productcatagoryid`, `productname`, `productprice`, `productimg`, `productimg2`, `productdesc`) VALUES
+(10, 1, 'jordan 1 dior', '20', './uploads/17-06-2021/6e8a7cb13fa3e0493b099972939483e9(1).jpg', '1', '<ul>\r\n	<li>8979879897</li>\r\n	<li>97897</li>\r\n</ul>\r\n'),
+(11, 2, 'sport drink', '20', './uploads/17-06-2021/portein.png', '1', '<ol>\r\n	<li>456</li>\r\n	<li>789</li>\r\n</ol>\r\n'),
+(13, 3, 'maat', '20', './uploads/17-06-2021/material2.png', '1', '<ol>\r\n	<li>20 cm</li>\r\n	<li>black</li>\r\n</ol>\r\n'),
+(14, 1, 'essensial', '30', './uploads/17-06-2021/Clothes.png', '1', '<ul>\r\n	<li>black</li>\r\n	<li>short</li>\r\n	<li>oke</li>\r\n</ul>\r\n'),
+(22, 1, 'hoodie blue', '50', './uploads/17-06-2021/bluehoodie.png', './uploads/17-06-2021/CriticalSweatZipUpHoodieAshTeal.png', '<ul>\r\n	<li>blue</li>\r\n	<li>hoodie</li>\r\n	<li>test</li>\r\n</ul>\r\n'),
+(24, 1, 'jordan 1 dior', '20', './uploads/17-06-2021/CriticalShortSageGreenGMSH3253D2_ZH_ZH_438x(1).png', './uploads/17-06-2021/CriticalShortSageGreenGMSH3253D2_ZH_ZH_438x(1).png', ''),
+(26, 2, '123', '1632', './uploads/17-06-2021/HoodieBlack.png', './uploads/17-06-2021/rtfd.png', '<p>123</p>\r\n'),
+(27, 3, '123', '1632', './uploads/17-06-2021/whitshirt.png', './uploads/17-06-2021/CriticalSweatZip(1).png', '<p>test123456</p>\r\n');
 
 -- --------------------------------------------------------
 
@@ -154,6 +169,27 @@ CREATE TABLE `product_catagory` (
   `p_catagoryname` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Gegevens worden geëxporteerd voor tabel `product_catagory`
+--
+
+INSERT INTO `product_catagory` (`productcatagoryid`, `p_catagoryname`) VALUES
+(1, 'Clothes'),
+(2, 'Sports Nutrition'),
+(3, 'Material');
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `product_imagelibrary`
+--
+
+CREATE TABLE `product_imagelibrary` (
+  `imagelibraryid` int(11) NOT NULL,
+  `productid` int(11) NOT NULL,
+  `imagelibraryname` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- --------------------------------------------------------
 
 --
@@ -161,11 +197,19 @@ CREATE TABLE `product_catagory` (
 --
 
 CREATE TABLE `subscriptions` (
+  `user_subid` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
-  `substatus` varchar(255) NOT NULL,
+  `substatus` int(11) NOT NULL,
   `subdate` date NOT NULL,
   `subprice` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `subscriptions`
+--
+
+INSERT INTO `subscriptions` (`user_subid`, `userid`, `substatus`, `subdate`, `subprice`) VALUES
+(1, 19, 1, '2021-06-16', 20);
 
 -- --------------------------------------------------------
 
@@ -192,7 +236,9 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`userid`, `useruid`, `firstname`, `lastname`, `password`, `useremail`, `userpostcode`, `useradress`, `userplaats`) VALUES
 (16, 'lwrdahmd', 'ahmad', 'kassem', '$2y$10$/jxdwnbpbKLIQaiOgGLb7unR5vYEq4Xzb9zQfeJjWAfajjIgshO.m', 'lwrdahmd37@gmail.com', '5621ep', 'lorentzstraat 1', 'Eindhoven'),
 (17, 'EnjoyNMyTime', 'ahmad', 'kassem', '$2y$10$BIxcklTKEyad0WDmbjToje5Vl9i5.lIoA4FeomKENqJw56iXlmSJa', 'gamin@gmail.com', '5621ep', 'lorentzstraat 1', 'Eindhvoen'),
-(18, 'RipOff20', 'ahmad', 'kassem', '$2y$10$cT3Wn93o1W5OJ7nt6c0EzetI9yITr6s3x0bIaCJJ3RrGtwNFcRNjK', 'kill@gmail.com', '5621ep', 'lorentzstraat 1', 'Eindhoven');
+(18, 'RipOff20', 'ahmad', 'kassem', '$2y$10$cT3Wn93o1W5OJ7nt6c0EzetI9yITr6s3x0bIaCJJ3RrGtwNFcRNjK', 'kill@gmail.com', '5621ep', 'lorentzstraat 1', 'Eindhoven'),
+(19, 'misstodis', 'Duc', 'Nguyen', '$2y$10$9NvQUqy7K9HVM9uhU.jZxu116Jg1kwAa3rVmsOue9z5sC5GA8C6SW', 'nduc21312000@hotmail.com', '5754GE', 'Peellandsingel, 158', 'DEURNE'),
+(20, 'ducnguyen', 'khoa', 'Nguyen', '$2y$10$i45fvI3vjNMIvo1cioxMHOK1GDAX9Y.ivSXoMZBfZXPZB4laiBd2m', 'nduc2312000@gmail.com', '5709GH', 'helmond', 'Helmond');
 
 --
 -- Indexen voor geëxporteerde tabellen
@@ -232,9 +278,17 @@ ALTER TABLE `product_catagory`
   ADD PRIMARY KEY (`productcatagoryid`);
 
 --
+-- Indexen voor tabel `product_imagelibrary`
+--
+ALTER TABLE `product_imagelibrary`
+  ADD PRIMARY KEY (`imagelibraryid`),
+  ADD KEY `productid_fk` (`productid`);
+
+--
 -- Indexen voor tabel `subscriptions`
 --
 ALTER TABLE `subscriptions`
+  ADD PRIMARY KEY (`user_subid`),
   ADD KEY `userid_fk` (`userid`);
 
 --
@@ -271,19 +325,31 @@ ALTER TABLE `cursus_info`
 -- AUTO_INCREMENT voor een tabel `products`
 --
 ALTER TABLE `products`
-  MODIFY `productid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `productid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT voor een tabel `product_catagory`
 --
 ALTER TABLE `product_catagory`
-  MODIFY `productcatagoryid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `productcatagoryid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT voor een tabel `product_imagelibrary`
+--
+ALTER TABLE `product_imagelibrary`
+  MODIFY `imagelibraryid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT voor een tabel `subscriptions`
+--
+ALTER TABLE `subscriptions`
+  MODIFY `user_subid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT voor een tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Beperkingen voor geëxporteerde tabellen
@@ -306,6 +372,12 @@ ALTER TABLE `cursus_info`
 --
 ALTER TABLE `products`
   ADD CONSTRAINT `product_catagory_fk` FOREIGN KEY (`productcatagoryid`) REFERENCES `product_catagory` (`productcatagoryid`);
+
+--
+-- Beperkingen voor tabel `product_imagelibrary`
+--
+ALTER TABLE `product_imagelibrary`
+  ADD CONSTRAINT `productid_fk` FOREIGN KEY (`productid`) REFERENCES `products` (`productid`);
 
 --
 -- Beperkingen voor tabel `subscriptions`
