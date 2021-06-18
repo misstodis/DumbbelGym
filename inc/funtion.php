@@ -1,5 +1,3 @@
-<?php
-session_start();
 // make funtion connecting to the database
 function dbconnect()
 {
@@ -29,7 +27,7 @@ function getCategories()
     $getCategorySQL = "SELECT * FROM `categories`";
     // run sql
     $result = $conn->query($getCategorySQL) or die($conn->error);
-    // fetch result to associative array teams
+    // fetch result to associative array
     $categories = $result->fetch_all(MYSQLI_ASSOC);
     //close connection for safety
     $conn -> close();
@@ -68,7 +66,7 @@ function getCursus()
        $getCursusSQL = "SELECT * FROM `cursus` LEFT JOIN `categories` ON `cursus`.`catagoryid` = `categories`.`catagoryid` WHERE `cursus`.`catagoryid` = $categoryid" ;
        // run sql
         $result = $conn->query($getCursusSQL) or die($conn->error);
-        // fetch result to associative array teams
+        // fetch result to associative array 
         $cursus = $result->fetch_all(MYSQLI_ASSOC);
         //close connection for safety
         $conn -> close();
@@ -136,7 +134,7 @@ function getCursusInfo($cursusid)
         $getCursusInfoSQL = "SELECT * FROM `cursus_info` JOIN cursus ON cursus_info.cursusid = cursus.cursusid WHERE cursus.cursusid = $cursusid";
         // run sql
         $result = $conn->query($getCursusInfoSQL) or die($conn->error);
-        // fetch result to associative array teams
+        // fetch result to associative array 
         $cursusInfo = $result->fetch_all(MYSQLI_ASSOC);
         //close connection for safety
         $conn -> close();
@@ -154,7 +152,7 @@ function getProductCategories()
     $getProductCategoriesSQL = "SELECT * FROM `product_catagory`";
     // run sql
     $result = $conn->query($getProductCategoriesSQL) or die($conn->error);
-    // fetch result to associative array teams
+    // fetch result to associative array
     $ProductCategories = $result->fetch_all(MYSQLI_ASSOC);
     //close connection for safety
     $conn -> close();
@@ -174,10 +172,10 @@ function getProducts()
     }
     if(isset($_GET["productcatagoryid"]))
     {
-        $getProductsSQL = "SELECT * FROM `products` WHERE productcatagoryid =".$_GET["productcatagoryid"];
+        $getProductsSQL = "SELECT * FROM product_catagory JOIN products ON products.productcatagoryid = product_catagory.productcatagoryid WHERE product_catagory.productcatagoryid =".$_GET["productcatagoryid"];
     }
     $result = $conn->query($getProductsSQL) or die($conn->error);
-    // fetch result to associative array teams
+    // fetch result to associative array
     $Products = $result->fetch_all(MYSQLI_ASSOC);
     //close connection for safety
     $conn -> close();
@@ -197,24 +195,36 @@ function displayProductCategories()
                         foreach($ProductCategories as $ProductCategory)
                         {
                             ?>  
-                                <div class="col"><a href="productList.php?productcatagoryid=<?php echo $ProductCategory['productcatagoryid']; ?>"><?php echo $ProductCategory['p_catagoryname']; ?></a></div>
+                                <div class="col"><a href="productList.php?productcatagoryid=<?php echo $ProductCategory['productcatagoryid']; ?>">
+                                <?php echo $ProductCategory['p_catagoryname']; ?></a></div>
                             <?php
                         }
                     ?>
                 </div>
             </div>
             <div class="container product-info">
+                <div>
+                    <h1>
+                        <?php 
+                            $products = getProducts();
+                            if(isset($_GET['productcatagoryid']))
+                            {
+                                echo $products[0]['p_catagoryname'];
+                            }
+                        ?>
+                    </h1>
+                </div>
                 <div class="row">
-                    <?php $poducts = getProducts();
-                        foreach($poducts as $poduct)
+                    <?php 
+                        foreach($products as $product)
                         {
                          ?>
                             <div class="col-md-3 col-sm-6" style="margin-top: 1.5em;">
                                 <div class="product-grid">
                                     <div class="product-image">
                                         <a href="productdetail.html" class="image">
-                                            <img class="pic-1" src="./img/<?php echo $poduct["productimg"] ?>">
-                                            <img class="pic-2" src="./img/<?php echo $poduct["productimg2"] ?>">
+                                            <img class="pic-1" src="<?php echo $product["productimg"] ?>">
+                                            <img class="pic-2" src="<?php echo $product["productimg2"] ?>">
                                         </a>
                                         <!-- if there is clothes then show the size-->
                                         <?php                     
@@ -245,8 +255,8 @@ function displayProductCategories()
                                         ?>
                                     </div>
                                     <div class="product-content">
-                                        <h3 class="product-title"><a href="productdetail.html"><?php echo $poduct["productname"] ?></a></h3>
-                                        <div class="product-price"><?php echo $poduct["productprice"] ?></div>
+                                        <h3 class="product-title"><a href="productdetail.html"><?php echo $product["productname"] ?></a></h3>
+                                        <div class="product-price"><?php echo $product["productprice"] ?></div>
                                     </div>
                                 </div>
                             </div>
@@ -277,6 +287,7 @@ function displayHTMLhead()
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
             <!-- End connect to bootrap cs -->
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+            <script src="//cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
         </head>
 
         <body>
@@ -385,18 +396,27 @@ function displayHTMLFooter()
         </html>
     <?php
 }
+/*--------------------upload files Functions---------------*/
 
 function uploadFiles($uploadedFiles)
 {
     $files = array();
     $errors = array();
+    $returnFiles = array();
 
     foreach($uploadedFiles as $key => $values)
     {
-        foreach($values as $index => $value)
-        {
-            $files[$index][$key] = $value;
-        }
+       if (is_array($values)) 
+       {
+           foreach($values as $index => $value)
+           {
+               $files[$index][$key]= $value;
+           }
+       }
+       else
+       {
+           $files[$key] = $values;
+       }
     }
     // maken nieuw folder met naam "uploadfile" + datum
     $uploadPath = "./uploads/". date('d-m-Y',time());
@@ -404,276 +424,80 @@ function uploadFiles($uploadedFiles)
     {
         mkdir($uploadPath,0777,true);
     }
-    foreach( $files as $file)
+    if (is_array(reset($files))) 
     {
-        $file = validateUploadFile($file, $uploadPath);
-        if($file != false)
+        foreach( $files as $file)
         {
-            move_uploaded_file($file["tmp_name"], $uploadPath . "/" . $file["name"]);
+            $result = validateUploadFile($file, $uploadPath);
+            if($result['error'])
+            {
+                $errors[] = $result['message'];
+            }
+            else
+            {
+                $returnFiles[] =  $result['path'];
+            }
+        }
+    }
+    else
+    {
+        $result = processUploadFile($files,$uploadPath);
+        if($result['error'])
+        {
+            return array('errors'=> $result['message']);
         }
         else
         {
-            $errors[] = "the file". basename($file["name"]). "isn't valid.";
+            return array('path'=> $result['path']);
         }
+
     }
-    return $errors;
+    return array(
+        'errors' => $errors, 'uploaded_files'=> $returnFiles
+    );
 }
 
+function processUploadFile($file,$uploadPath){
+    $file = validateUploadFile($file, $uploadPath);
+    if ($file != false) {
+        $file["name"] = str_replace(' ','_',$file["name"]);
+        if(move_uploaded_file($file["tmp_name"], $uploadPath . '/' . $file["name"])){
+            return array(
+                'error'=>false,
+                'path' => str_replace('../', '/', $uploadPath) . '/' . $file["name"]
+            );
+        }
+    }else{
+        return array(
+            'error'=>false,
+            'message' => "File upload " . basename($file["name"]) . " not invalid"
+        );
+    }
+}
 function validateUploadFile($file, $uploadPath)
 {
     // controleren of er de file is groter dan geaccepterende file Capaciteit
-    if ($file['size'] > 2 * 1024 * 1024) // max upload is 2Mb = 2 * 1024kb * 1024 bite
-    {
+    if ($file['size'] > 2 * 1024 * 1024) { //max upload is 2 Mb = 2 * 1024 kb * 1024 bite
         return false;
     }
-    // checken of er file is toestand
-    $validType = array("jpg","jpeg","png","bmp","mp4");
-    $fileType = substr($file['name'], strrpos($file['name'],".") + 1);
-    if(!in_array($fileType, $validType))
-    {
+    //Kiểm tra xem kiểu file có hợp lệ không?
+    $validTypes = array("jpg", "jpeg", "png", "bmp","xlsx","xls");
+    $fileType = strtolower(substr($file['name'], strrpos($file['name'], ".") + 1));
+    if (!in_array($fileType, $validTypes)) {
         return false;
     }
-    //check als er al een file met zelfde naam bestaat ? als er een bestaat dan veranderen de naam
-    $num = 1;
+    //Check xem file đã tồn tại chưa? Nếu tồn tại thì đổi tên
+    $num = 0;
     $fileName = substr($file['name'], 0, strrpos($file['name'], "."));
     while (file_exists($uploadPath . '/' . $fileName . '.' . $fileType)) {
         $fileName = $fileName . "(" . $num . ")";
         $num++;
     }
-    $file['name'] = $fileName . '.' . $fileType;
+    if($num != 0){
+        $fileName = substr($file['name'], 0, strrpos($file['name'], ".")). "(" . $num . ")";
+    }else{
+        $fileName = substr($file['name'], 0, strrpos($file['name'], "."));
+    }
+    $file['name'] =  $fileName . '.' . $fileType;
     return $file;
 }
-
-
-
-/*--------------------Sign Up Page Functions---------------*/
-
-function emptyInputSignup($username, $fname, $lname, $email, $pwd, $confirmpassword, $place, $postcode, $adress) 
-{
-    $result;
-    if(empty($username) || empty($fname) || empty($lname) || empty($email) || empty($pwd) || empty($confirmpassword) || empty($place) || empty($postcode) || empty($adress))
-    {
-        $result = true;
-    }
-    else {
-        $result = false;
-    }
-
-    return $result;
-}
-
-function invalidUid($username) 
-{
-    $result;
-    if(!preg_match("/^[a-zA-Z0-9]*$/", $username))
-    {
-        $result = true;
-    }
-    else {
-        $result = false;
-    }
-
-    return $result;
-}
-
-function invalidEmail($email) 
-{
-    $result;
-    if(!filter_var($email, FILTER_VALIDATE_EMAIL))
-    {
-        $result = true;
-    }
-    else {
-        $result = false;
-    }
-
-    return $result;
-}
-
-function pwdMatch($pwd, $confirmpassword) 
-{
-    $result;
-    if($pwd !== $confirmpassword)
-    {
-        $result = true;
-    }
-    else {
-        $result = false;
-    }
-
-    return $result;
-}
-
-function uidExist($conn, $username, $email) 
-{
-    $sql = "SELECT * FROM `users` WHERE `useruid` = ? OR `useremail` = ?;";
-    $stmt = mysqli_stmt_init($conn);
-    if(!mysqli_stmt_prepare($stmt, $sql)) 
-    {
-        header("Location: ../signup.php?error=stmtfailed");
-        exit();
-    }
-
-    mysqli_stmt_bind_param($stmt, "ss", $email, $username);
-    mysqli_stmt_execute($stmt);
-
-    $resultData = mysqli_stmt_get_result($stmt);
-
-    if ($row = mysqli_fetch_assoc($resultData))
-    {
-        return $row;
-    }
-    else {
-        $result = false;
-        return $result;
-    }
-
-    mysqli_stmt_close($stmt);
-}
-
-function createUser($conn, $username, $fname, $lname, $email, $pwd, $place, $postcode, $adress) 
-{
-    $sql = "INSERT INTO `users` (`useruid`, `firstname`, `lastname`, `useremail`, `password`, `userplaats`, `userpostcode`, `useradress`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-    $stmt = mysqli_stmt_init($conn);
-    if(!mysqli_stmt_prepare($stmt, $sql)) 
-    {
-        header("Location: ../signup.php?error=stmtfailed1");
-        exit();
-    }
-
-    $hashedpwd = password_hash($pwd, PASSWORD_DEFAULT);
-
-    mysqli_stmt_bind_param($stmt, "ssssssss", $username, $fname, $lname, $email, $hashedpwd, $place, $postcode, $adress);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
-    header("Location: ../signup.php?error=none");
-    exit();
-}
-
-function SignupErrorCheck()
-{
-    if (isset($_GET["error"]))
-    {
-        if ($_GET["error"] == "emptyInputSignup")
-        {
-            echo "<p>Fill in all the fields</p>";
-        }
-
-        else if ($_GET["error"] == "invaliduid")
-        {
-            echo "<p>The username is not valid</p>";
-        }
-
-        else if ($_GET["error"] == "invalidEmail")
-        {
-            echo "<p>The email is not valid</p>";
-        }
-
-        else if ($_GET["error"] == "passwordDontmatch")
-        {
-            echo "<p>The passwords don't match</p>";
-        }
-
-        else if ($_GET["error"] == "usernametaken")
-        {
-            echo "<p>This username is already taken</p>";
-        }
-
-        else if ($_GET["error"] == "stmtfailed")
-        {
-            echo "<p>Something went wrong!!, try again</p>";
-        }
-
-        else if ($_GET["error"] == "usernametaken")
-        {
-            echo "<p>This username is already taken</p>";
-        }
-
-        else if ($_GET["error"] == "none")
-        {
-            echo "<p>You have signed up!</p>";
-        }
-    }
-}
-
-/*--------------------Login Page Functions---------------*/
-
-function emptyInputLogin($username, $pwd) 
-{
-    $result;
-    if(empty($username) || empty($pwd))
-    {
-        $result = true;
-    }
-    else {
-        $result = false;
-    }
-
-    return $result;
-}
-
-function loginUser($conn, $username, $pwd)
-{
-    $uidExist = uidExist($conn, $username, $username);
-
-    if ($uidExist == false)
-    {
-        header("Location: ../login.php?error=wronglogin");
-        exit();
-    }
-
-    $pwdHashed = $uidExist['password'];
-    $checkPwd = password_verify($pwd, $pwdHashed);
-
-    if ($checkPwd === false)
-    {
-        header("Location: ../login.php?error=wronglogin");
-        exit();
-    }
-
-    else if ($checkPwd === true)
-    {
-        session_start();
-        $_SESSION["userid"] = $uidExist[`userid`];
-        $_SESSION["username"] = $uidExist[`useruid`];
-        $_SESSION["isUserLoggedIn"] = true;
-        header("location: ../index.php");
-        exit();
-    }
-}
-
-function LoginErrorCheck()
-{
-    if(isset($_GET["error"]))
-    {
-        if ($_GET["error"] == "emptyInput")
-        {
-            echo "<p>Fill in all the fields</p>";
-        }
-
-        else if ($_GET["error"] == "wronglogin")
-        {
-            echo "<p>The password or the username are incorrect! Please try again</p>";
-        }
-    }
-}
-
-/*function isLoggedIn()
-{
-    if($_SESSION["isUserLoggedIn"] == true)
-    {
-        return true;
-    }
-    return false;
-}*/
-
-/*function myDump($varTodump, $exit = false)
-{
-    echo "<pre>";
-    var_dump($varTodump);
-    echo "</pre>";
-    if($exit) die("done");
-}*/
-
-?>
-
