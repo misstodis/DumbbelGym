@@ -189,11 +189,16 @@ function getProducts()
     $conn = dbconnect();
     // define a empty array
     $Products = array();
+    // delete product
+    if(isset($_GET["deleteid"]))
+    {
+        $getProductsSQL = "SELECT * FROM product_catagory JOIN products ON products.productcatagoryid = product_catagory.productcatagoryid WHERE product_catagory.productcatagoryid =".$_GET["deleteid"];
+    }
     if(!isset($_GET["productcatagoryid"]))
     {
         $getProductsSQL = "SELECT * FROM `products`";
     }
-    if(isset($_GET["productcatagoryid"]))
+    elseif(isset($_GET["productcatagoryid"]))
     {
         $getProductsSQL = "SELECT * FROM product_catagory JOIN products ON products.productcatagoryid = product_catagory.productcatagoryid WHERE product_catagory.productcatagoryid =".$_GET["productcatagoryid"];
     }
@@ -205,27 +210,48 @@ function getProducts()
     // return regions array
     return $Products;
 }
-
+//make a function to get the product detail
+function getProductDetail($productid)
+{
+    // get connect to database
+    $conn = dbconnect();
+    // define a empty array
+    $ProductDetails = array();
+    $getgetProductDetailSQL = " SELECT * FROM `products` JOIN product_imagelibrary ON products.productid = product_imagelibrary.productid JOIN product_catagory ON products.productcatagoryid = product_catagory.productcatagoryid WHERE products.productid =".$productid;
+    $result = $conn->query($getgetProductDetailSQL) or die($conn->error);
+    // fetch result to associative array
+    $ProductDetails = $result->fetch_all(MYSQLI_ASSOC);
+    //close connection for safety
+    $conn -> close();
+    // return regions array
+    return $ProductDetails;
+}
 function displayProductCategories()
 {
     $ProductCategories = getProductCategories();
     ?>
-        <div class="product-contain">
-            <div class="product-nav">
-                <h1>SHOP</h1>
+        <div class="product-contain ">
+            <div class="product-nav <?=!isset($_GET['productid'])?"sticky-top":"" ?>" >
+                <h1><a href= "product.php">SHOP</a></h1>
                 <div class="row align-items-start product-category ">
                     <?php
                         foreach($ProductCategories as $ProductCategory)
                         {
                             ?>  
-                                <div class="col"><a href="productList.php?productcatagoryid=<?php echo $ProductCategory['productcatagoryid']; ?>">
+                                <div class="col"><a href="product.php?productcatagoryid=<?php echo $ProductCategory['productcatagoryid']; ?>">
                                 <?php echo $ProductCategory['p_catagoryname']; ?></a></div>
                             <?php
                         }
                     ?>
                 </div>
             </div>
-            <div class="container product-info">
+    <?php
+}
+function displayProductList()
+{
+    displayProductCategories();
+    ?>
+        <div class="container product-info">
                 <div>
                     <h1>
                         <?php 
@@ -245,9 +271,9 @@ function displayProductCategories()
                             <div class="col-md-3 col-sm-6" style="margin-top: 1.5em;">
                                 <div class="product-grid">
                                     <div class="product-image">
-                                        <a href="productdetail.html" class="image">
-                                            <img class="pic-1" src="<?php echo $product["productimg"] ?>">
-                                            <img class="pic-2" src="<?php echo $product["productimg2"] ?>">
+                                        <a href="product.php?productid=<?php echo$product['productid'] ?>" class="image">
+                                            <img class="pic-1" src=".<?php echo $product["productimg"] ?>">
+                                            <img class="pic-2" src=".<?php echo $product["productimg2"] ?>">
                                         </a>
                                         <!-- if there is clothes then show the size-->
                                         <?php                     
@@ -279,7 +305,7 @@ function displayProductCategories()
                                     </div>
                                     <div class="product-content">
                                         <h3 class="product-title"><a href="productdetail.html"><?php echo $product["productname"] ?></a></h3>
-                                        <div class="product-price"><?php echo $product["productprice"] ?></div>
+                                        <div class="product-price">€ <?php echo $product["productprice"] ?></div>
                                     </div>
                                 </div>
                             </div>
@@ -290,6 +316,57 @@ function displayProductCategories()
             </div>
         </div>
     <?php
+}
+
+function displayProductDetail($productid)
+{
+$ProductDetails = getProductDetail($productid);
+displayProductCategories();
+?>
+<div class="small-container singele-product">
+    <div class="row" style="margin: 0">
+      <div class="col-4">
+        <img style="width: 100%;" src=".<?= $ProductDetails[0]['productimg']?>" id="product-detail-image">
+        <div class="small-img-row">
+          <?php
+            foreach($ProductDetails as $productDetail)
+            {
+                ?>
+                    <div class="small-img-col">
+                        <img src=".<?= $productDetail['imagelibraryname']?>" style="width: 100%;" class="small-product-image">
+                    </div>
+                <?php
+            }
+          ?>
+        </div>
+      </div>
+      <div class="col-4">
+        <p><?= $ProductDetails[0]['p_catagoryname']?></p>
+        <h1><?= $ProductDetails[0]['productname']?></h1>
+        <h4>€ <?= $ProductDetails[0]['productprice']?></h4>
+        <select name="" id="">
+          <option>Select size</option>
+          <option>XS</option>
+          <option>S</option>
+          <option>M</option>
+          <option>L</option>
+          <option>XL</option>
+        </select>
+
+        <input type="number" value="1">
+        <a href="" class="btn">Add to card</a>
+        <div class="product-detail">
+          <h3>Product detail</h3>
+            <?= $ProductDetails[0]['productdesc']?>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/scrip.js" type="text/javascript"></script>
+
+</div>
+<?php
 }
 //make funtion display html head
 function displayHTMLhead()
@@ -436,70 +513,148 @@ function displayHTMLFooter()
         </html>
     <?php
 }
+
+function displayAdminHTMLhead()
+{
+    ?>
+        <!DOCTYPE html>
+        <html lang="en" dir="ltr">
+
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Dumbel Gym</title>
+            <link rel="stylesheet" href="../css/styles.css">
+            <!-- connect to bootrap cs -->
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+                integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+            <meta charset="utf-8">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+            <!-- End connect to bootrap cs -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+            <script src="//cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+        </head>
+
+        <body>
+            <header class="header-contain" >
+                <div class="header-container" id="navbar" >
+                    <div class="d-flex align-items-center">
+                        <div class="logo-contain">
+                           <h1 style="color:#45A29E;"> Hello Admin <h1>
+                        </div>
+                        <div>
+                            <a href="../admin/index.php" class="nav-link" style="color: #C5C6C7; font-size: 1.3em;" > product list</a>
+                        </div>
+                        <?php
+                        if (isLoggedIn())
+                        {
+                            ?>
+                            <div class="login-contain">
+                                <a class="btn-login" href="../inc/logout.inc.php" onclick="return confirm('Are you sure you want to log out')"><i class="bi bi-box-arrow-right"></i></a>
+                            </div>
+                            <?php
+                        }
+                        else
+                        {
+                            ?>
+                            <div class="login-contain">
+                                <a href="login.php" class="btn-login"><i class="bi bi-person-circle"></i></a>
+                            </div>
+                            <?php
+                        }
+                        ?>
+                    </div>
+                </div>
+            </header>
+    <?php
+}
+function displayAdminHTMLFooter()
+{
+    ?>
+    <footer>
+        <div class="footer-contain">
+            <!-- Copyright -->
+            <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+                © 2021 Dumbbel Gym
+            </div>
+            <!-- Copyright -->
+        </div>
+    </footer>
+</body>
+</html>
+<?php
+}
+
 /*--------------------upload files Functions---------------*/
 
-function uploadFiles($uploadedFiles)
-{
+function uploadFiles($uploadedFiles) {
     $files = array();
     $errors = array();
     $returnFiles = array();
-
-    foreach($uploadedFiles as $key => $values)
-    {
-       if (is_array($values)) 
-       {
-           foreach($values as $index => $value)
-           {
-               $files[$index][$key]= $value;
-           }
-       }
-       else
-       {
-           $files[$key] = $values;
-       }
-    }
-    // maken nieuw folder met naam "uploadfile" + datum
-    $uploadPath = "./uploads/". date('d-m-Y',time());
-    if(!is_dir($uploadPath))
-    {
-        mkdir($uploadPath,0777,true);
-    }
-    if (is_array(reset($files))) 
-    {
-        foreach( $files as $file)
+    
+    foreach ($uploadedFiles as $key => $values) {
+        if(is_array($values))
         {
-            $result = validateUploadFile($file, $uploadPath);
-            if($result['error'])
+            foreach ($values as $index => $value) 
             {
-                $errors[] = $result['message'];
+                $files[$index][$key] = $value;
             }
-            else
-            {
-                $returnFiles[] =  $result['path'];
+        }
+        else
+        {
+            $files[$key] = $values;
+        }
+    }
+    //make folder uploads with date
+    $uploadPath = "../uploads/" . date('d-m-Y', time());
+    if (!is_dir($uploadPath)) 
+    {
+        mkdir($uploadPath, 0777, true);
+    }
+    //Upload more image
+    if(is_array(reset($files))){
+        foreach ($files as $file) 
+        {
+            $result = processUploadFile($file,$uploadPath);
+            if($result['error']){
+                $errors[] = $result['message'];
+            }else{
+                $returnFiles[] = $result['path'];
             }
         }
     }
     else
-    {
+    { //Up 1 image
         $result = processUploadFile($files,$uploadPath);
-        if($result['error'])
+        // if($result == NULL)
+        // {
+        //     echo "file not valid";
+        // }
+        // var_dump($result);exit;
+        if($result['error'] == true)
         {
-            return array('errors'=> $result['message']);
+            return array(
+                'errors' => $result['message']
+            );
         }
+        // if there in array['erros'] not true (not false by the type file)
         else
         {
-            return array('path'=> $result['path']);
+            return array(
+                'path' => $result['path']
+            );
         }
-
     }
     return array(
-        'errors' => $errors, 'uploaded_files'=> $returnFiles
+        'errors' => $errors,
+        'uploaded_files' => $returnFiles
     );
 }
 
 function processUploadFile($file,$uploadPath){
     $file = validateUploadFile($file, $uploadPath);
-    if ($file != false) {
+    if ($file != false) 
+    {
         $file["name"] = str_replace(' ','_',$file["name"]);
         if(move_uploaded_file($file["tmp_name"], $uploadPath . '/' . $file["name"])){
             return array(
@@ -507,37 +662,51 @@ function processUploadFile($file,$uploadPath){
                 'path' => str_replace('../', '/', $uploadPath) . '/' . $file["name"]
             );
         }
-    }else{
-        return array(
-            'error'=>false,
-            'message' => "File upload " . basename($file["name"]) . " not invalid"
-        );
+    }
+    else
+    {
+        // return array(
+        //     'error'=>false,
+        //     'message' => "File upload" . basename($file["name"]) . " not valid."
+        // );
+        echo "file is not valid";
     }
 }
+
 function validateUploadFile($file, $uploadPath)
 {
     // controleren of er de file is groter dan geaccepterende file Capaciteit
-    if ($file['size'] > 2 * 1024 * 1024) { //max upload is 2 Mb = 2 * 1024 kb * 1024 bite
+    if ($file['size'] > 2 * 1024 * 1024) 
+    { //max upload is 2 Mb = 2 * 1024 kb * 1024 bite
+        // echo "not valid files, maximum files upload is 2MB";
         return false;
     }
-    //Kiểm tra xem kiểu file có hợp lệ không?
-    $validTypes = array("jpg", "jpeg", "png", "bmp","xlsx","xls");
-    $fileType = strtolower(substr($file['name'], strrpos($file['name'], ".") + 1));
-    if (!in_array($fileType, $validTypes)) {
+    //checken the type of files
+    // make a array with file type name
+    $validTypes = array("jpg", "jpeg", "png");
+    // take out the file en get the file type
+    $fileType = substr($file['name'], strrpos($file['name'], ".") + 1);
+    //if file type not in the array $validTypes
+    
+    if (!in_array($fileType, $validTypes)) 
+    {
+        // echo "not valid files, type files must be (jpg, jpeg, png)";
         return false;
     }
-    //Check xem file đã tồn tại chưa? Nếu tồn tại thì đổi tên
+    //Check file in de folder upload 
     $num = 0;
     $fileName = substr($file['name'], 0, strrpos($file['name'], "."));
     while (file_exists($uploadPath . '/' . $fileName . '.' . $fileType)) {
         $fileName = $fileName . "(" . $num . ")";
         $num++;
     }
+    // if there have file with the same name then save new file + $num  
     if($num != 0){
         $fileName = substr($file['name'], 0, strrpos($file['name'], ".")). "(" . $num . ")";
     }else{
         $fileName = substr($file['name'], 0, strrpos($file['name'], "."));
     }
+    //save new file + $num + file type
     $file['name'] =  $fileName . '.' . $fileType;
     return $file;
 }
@@ -766,6 +935,45 @@ function LoginErrorCheck()
 function isLoggedIn()
 {
     if($_SESSION['user']["isUserLoggedIn"] == true)
+    {
+        return true;
+    }
+    return false;
+}
+function LoginAdmin($conn, $username, $pwd)
+{
+    $uidExist = uidExist($conn, $username, $username);
+
+    if ($uidExist == "misstodis")
+    {
+        header("Location: ../login.php?error=wronglogin");
+        exit();
+    }
+
+    $pwdHashed = $uidExist['password'];
+    $checkPwd = password_verify($pwd, $pwdHashed);
+
+    if ($checkPwd === false)
+    {
+        header("Location: ../login.php?error=wronglogin");
+        exit();
+    }
+
+    else if ($checkPwd === true)
+    {
+        // store the user info in session key user
+        $_SESSION["user"] = $uidExist;
+        // add new key isUserLoggedIn in user
+        $_SESSION['user']["isUserLoggedIn"] = true;
+
+        header("location: ../admin/index.php");
+        exit();
+    }
+}
+
+function isAdminlogin()
+{
+    if($_SESSION['user']["isUserLoggedIn"] == "misstodis")
     {
         return true;
     }

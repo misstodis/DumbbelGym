@@ -1,5 +1,4 @@
 <?php
-
 if (isset($_POST["submit"]))
 {
     $username = $_POST["username"];
@@ -12,10 +11,14 @@ if (isset($_POST["submit"]))
         header('Location: ../login.php?error=emptyinput');
         exit();
     }
-
-    loginUser($conn, $username, $pwd);
+    else
+    {
+        LoginAdmin($conn, $username, $pwd);
+        loginUser($conn, $username, $pwd);
+    }   
 }
 else {
     header('Location: ../login.php');
     exit();
 }
+?>
