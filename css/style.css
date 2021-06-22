@@ -749,15 +749,7 @@ footer
 {
     text-align: center;
     padding-top: 1.2em;
-    /* background: linear-gradient(to right, rgba(102, 252, 241,1) 43%,rgba(69, 162, 158,0.9) 60%); */
-    /* background-color:rgba(102, 252, 241) ; */
-    background-image: url("../img/test.jpg");
-    background-attachment: fixed;
-}
-.product-nav h1 a
-{
-    text-decoration: none;
-    color: #66FCF1;
+    background: linear-gradient(to right, rgba(102, 252, 241,0.5) 43%,rgba(69, 162, 158,0.4) 60%);
 }
 .product-category
 {
@@ -944,11 +936,7 @@ input:forcus
     display: flex;
     justify-content: space-between;
     margin-top: 2em;
-}
-.small-img-row .small-img-col img
-{
-    width: 100%;
-    height: 130px;
+
 }
 .small-img-col
 {
@@ -1343,49 +1331,19 @@ input:forcus
 .product-form-A .product-form-input 
 {
     margin-top: 1.5em;
-    /* display: flex; */
+    display: flex;
 }
 .product-form-A .product-form-input 
 {
     /* border: 1px solid; */
-    /* text-align: center; */
 }
 .product-form-A .product-form-input label
 {
     font-size: 1.5em;
-    color: #0B0C10;
 }
 .product-form-A .product-form-input input
 {
-    width: 100%;
-}
-.product-form-A .product-form-input img
-{
-    width: 150px;
-    height: 150px;
-    margin-top: 5px;
-    margin-left: 10px;
-}
-.product-form-A .product-form-input .display-image-gallery
-{
-    display: flex;
-}
-.product-form-A .product-form-input .display-image-gallery .image-gallery
-{
-    position: relative;
-}
-.product-form-A .product-form-input .display-image-gallery .image-gallery a
-{
-    position: absolute;
-    margin-left: 10px;
-    background-color:rgba(69, 162, 158, 0.3);
-    text-decoration: none;
-    color: #0B0C10;
-    margin-top: 7px;
-}
-.product-form-A .product-form-input .display-image-gallery .image-gallery a:hover
-{
-    border: 1px solid;
+
 }
 .ask-adimlogin
 {
@@ -1401,24 +1359,3 @@ input:forcus
 {
     text-align: center;
 }
-.up-load-succes
-{
-    text-align: center;
-}
-.up-load-succes a
-{
-    text-decoration: none;
-    margin-left: 20px;
-    background-color: #45A29E;
-    border-radius: 10px;
-    font-size: 1.4em;
-    padding: 5px;
-    color: #C5C6C7;
-    margin-top: 30px;
-}
-.up-load-succes a:hover
-{
-    border: 1px solid  #1F2833;
-    color: #C5C6C7;
-}
-
