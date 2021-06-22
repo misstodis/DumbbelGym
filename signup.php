@@ -17,7 +17,7 @@ displayHTMLhead();
     <div id="login">
         <div class="container">
             <div id="login-row" class="row justify-content-center align-items-center">
-                <div id="login-column" class="col-md-6">
+                <div id="login-column" class="col-md-5">
                     <div id="singup-box" class="col-md-12">
                         <form id="login-form" action="inc/signup.inc.php" method="post">
                             <h3 class="text-center">sign in</h3>

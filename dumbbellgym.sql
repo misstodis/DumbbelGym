@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 18 jun 2021 om 09:06
+-- Gegenereerd op: 22 jun 2021 om 10:46
 -- Serverversie: 10.4.17-MariaDB
 -- PHP-versie: 8.0.0
 
@@ -149,14 +149,10 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`productid`, `productcatagoryid`, `productname`, `productprice`, `productimg`, `productimg2`, `productdesc`) VALUES
-(10, 1, 'jordan 1 dior', '20', './uploads/17-06-2021/6e8a7cb13fa3e0493b099972939483e9(1).jpg', '1', '<ul>\r\n	<li>8979879897</li>\r\n	<li>97897</li>\r\n</ul>\r\n'),
-(11, 2, 'sport drink', '20', './uploads/17-06-2021/portein.png', '1', '<ol>\r\n	<li>456</li>\r\n	<li>789</li>\r\n</ol>\r\n'),
-(13, 3, 'maat', '20', './uploads/17-06-2021/material2.png', '1', '<ol>\r\n	<li>20 cm</li>\r\n	<li>black</li>\r\n</ol>\r\n'),
-(14, 1, 'essensial', '30', './uploads/17-06-2021/Clothes.png', '1', '<ul>\r\n	<li>black</li>\r\n	<li>short</li>\r\n	<li>oke</li>\r\n</ul>\r\n'),
-(22, 1, 'hoodie blue', '50', './uploads/17-06-2021/bluehoodie.png', './uploads/17-06-2021/CriticalSweatZipUpHoodieAshTeal.png', '<ul>\r\n	<li>blue</li>\r\n	<li>hoodie</li>\r\n	<li>test</li>\r\n</ul>\r\n'),
-(24, 1, 'jordan 1 dior', '20', './uploads/17-06-2021/CriticalShortSageGreenGMSH3253D2_ZH_ZH_438x(1).png', './uploads/17-06-2021/CriticalShortSageGreenGMSH3253D2_ZH_ZH_438x(1).png', ''),
-(26, 2, '123', '1632', './uploads/17-06-2021/HoodieBlack.png', './uploads/17-06-2021/rtfd.png', '<p>123</p>\r\n'),
-(27, 3, '123', '1632', './uploads/17-06-2021/whitshirt.png', './uploads/17-06-2021/CriticalSweatZip(1).png', '<p>test123456</p>\r\n');
+(144, 2, 'protein', '30', '/uploads/20-06-2021/portein.png', '/uploads/20-06-2021/portein2.png', '<ul>\r\n	<li>550g</li>\r\n	<li>protein</li>\r\n</ul>\r\n'),
+(145, 3, 'Fitness mat', '25', '/uploads/20-06-2021/material.png', '/uploads/20-06-2021/1200x435.jpg', '<ul>\r\n	<li>width: 180cm</li>\r\n	<li>height: 180cm</li>\r\n</ul>\r\n'),
+(149, 1, 'tshirt', '15', '/uploads/21-06-2021/whitshirt(1).png', '/uploads/21-06-2021/rtfd.png', '<p>123</p>\r\n'),
+(152, 1, 'short', '20', '/uploads/22-06-2021/CriticalShortSageGreenGMSH3253A_ZH_ZH_885x.png', '/uploads/22-06-2021/CriticalShortSageGreenGMSH3253B_ZH_ZH_290x.jpg', '<ul>\r\n	<li>short</li>\r\n	<li>&nbsp;</li>\r\n</ul>\r\n');
 
 -- --------------------------------------------------------
 
@@ -187,8 +183,26 @@ INSERT INTO `product_catagory` (`productcatagoryid`, `p_catagoryname`) VALUES
 CREATE TABLE `product_imagelibrary` (
   `imagelibraryid` int(11) NOT NULL,
   `productid` int(11) NOT NULL,
-  `imagelibraryname` int(11) NOT NULL
+  `imagelibraryname` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `product_imagelibrary`
+--
+
+INSERT INTO `product_imagelibrary` (`imagelibraryid`, `productid`, `imagelibraryname`) VALUES
+(145, 144, '/uploads/20-06-2021/portein(1).png'),
+(146, 144, '/uploads/20-06-2021/portein2(1).png'),
+(150, 145, '/uploads/20-06-2021/material2.png'),
+(165, 149, '/uploads/21-06-2021/shirt.jpg'),
+(166, 149, '/uploads/21-06-2021/whitshirt(1).png'),
+(170, 145, '/uploads/21-06-2021/1200x435(1).jpg'),
+(171, 145, '/uploads/21-06-2021/material(1).png'),
+(172, 149, '/uploads/21-06-2021/rtfd(1).png'),
+(173, 152, '/uploads/22-06-2021/CriticalShortSageGreenGMSH3253A_ZH_ZH_885x(1).png'),
+(174, 152, '/uploads/22-06-2021/CriticalShortSageGreenGMSH3253B_ZH_ZH_290x(1).jpg'),
+(175, 152, '/uploads/22-06-2021/CriticalShortSageGreenGMSH3253C_ZH_ZH_290x.png'),
+(176, 152, '/uploads/22-06-2021/CriticalShortSageGreenGMSH3253D2_ZH_ZH_438x.png');
 
 -- --------------------------------------------------------
 
@@ -219,6 +233,7 @@ INSERT INTO `subscriptions` (`user_subid`, `userid`, `substatus`, `subdate`, `su
 
 CREATE TABLE `users` (
   `userid` int(11) NOT NULL,
+  `userlevel` int(11) NOT NULL,
   `useruid` varchar(255) NOT NULL,
   `firstname` varchar(255) NOT NULL,
   `lastname` varchar(255) NOT NULL,
@@ -233,12 +248,12 @@ CREATE TABLE `users` (
 -- Gegevens worden geëxporteerd voor tabel `users`
 --
 
-INSERT INTO `users` (`userid`, `useruid`, `firstname`, `lastname`, `password`, `useremail`, `userpostcode`, `useradress`, `userplaats`) VALUES
-(16, 'lwrdahmd', 'ahmad', 'kassem', '$2y$10$/jxdwnbpbKLIQaiOgGLb7unR5vYEq4Xzb9zQfeJjWAfajjIgshO.m', 'lwrdahmd37@gmail.com', '5621ep', 'lorentzstraat 1', 'Eindhoven'),
-(17, 'EnjoyNMyTime', 'ahmad', 'kassem', '$2y$10$BIxcklTKEyad0WDmbjToje5Vl9i5.lIoA4FeomKENqJw56iXlmSJa', 'gamin@gmail.com', '5621ep', 'lorentzstraat 1', 'Eindhvoen'),
-(18, 'RipOff20', 'ahmad', 'kassem', '$2y$10$cT3Wn93o1W5OJ7nt6c0EzetI9yITr6s3x0bIaCJJ3RrGtwNFcRNjK', 'kill@gmail.com', '5621ep', 'lorentzstraat 1', 'Eindhoven'),
-(19, 'misstodis', 'Duc', 'Nguyen', '$2y$10$9NvQUqy7K9HVM9uhU.jZxu116Jg1kwAa3rVmsOue9z5sC5GA8C6SW', 'nduc21312000@hotmail.com', '5754GE', 'Peellandsingel, 158', 'DEURNE'),
-(20, 'ducnguyen', 'khoa', 'Nguyen', '$2y$10$i45fvI3vjNMIvo1cioxMHOK1GDAX9Y.ivSXoMZBfZXPZB4laiBd2m', 'nduc2312000@gmail.com', '5709GH', 'helmond', 'Helmond');
+INSERT INTO `users` (`userid`, `userlevel`, `useruid`, `firstname`, `lastname`, `password`, `useremail`, `userpostcode`, `useradress`, `userplaats`) VALUES
+(16, 0, 'lwrdahmd', 'ahmad', 'kassem', '$2y$10$/jxdwnbpbKLIQaiOgGLb7unR5vYEq4Xzb9zQfeJjWAfajjIgshO.m', 'lwrdahmd37@gmail.com', '5621ep', 'lorentzstraat 1', 'Eindhoven'),
+(17, 0, 'EnjoyNMyTime', 'ahmad', 'kassem', '$2y$10$BIxcklTKEyad0WDmbjToje5Vl9i5.lIoA4FeomKENqJw56iXlmSJa', 'gamin@gmail.com', '5621ep', 'lorentzstraat 1', 'Eindhvoen'),
+(18, 0, 'RipOff20', 'ahmad', 'kassem', '$2y$10$cT3Wn93o1W5OJ7nt6c0EzetI9yITr6s3x0bIaCJJ3RrGtwNFcRNjK', 'kill@gmail.com', '5621ep', 'lorentzstraat 1', 'Eindhoven'),
+(19, 0, 'misstodis', 'Duc', 'Nguyen', '$2y$10$9NvQUqy7K9HVM9uhU.jZxu116Jg1kwAa3rVmsOue9z5sC5GA8C6SW', 'nduc21312000@hotmail.com', '5754GE', 'Peellandsingel, 158', 'DEURNE'),
+(20, 0, 'ducnguyen', 'khoa', 'Nguyen', '$2y$10$i45fvI3vjNMIvo1cioxMHOK1GDAX9Y.ivSXoMZBfZXPZB4laiBd2m', 'nduc2312000@gmail.com', '5709GH', 'helmond', 'Helmond');
 
 --
 -- Indexen voor geëxporteerde tabellen
@@ -325,7 +340,7 @@ ALTER TABLE `cursus_info`
 -- AUTO_INCREMENT voor een tabel `products`
 --
 ALTER TABLE `products`
-  MODIFY `productid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `productid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
 
 --
 -- AUTO_INCREMENT voor een tabel `product_catagory`
@@ -337,7 +352,7 @@ ALTER TABLE `product_catagory`
 -- AUTO_INCREMENT voor een tabel `product_imagelibrary`
 --
 ALTER TABLE `product_imagelibrary`
-  MODIFY `imagelibraryid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `imagelibraryid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=177;
 
 --
 -- AUTO_INCREMENT voor een tabel `subscriptions`

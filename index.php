@@ -28,7 +28,7 @@ displayHTMLhead();
         <h3>"Look good and feel confident.<br> Join us in our fitness website<br> to get the best bodyshape in your
             life".
         </h3>
-        <div class="CheckProduct"><a href="productList.php">CHECK OUT OUR PRODUCT!!</a></div>
+        <div class="CheckProduct"><a href="product.php">CHECK OUT OUR PRODUCT!!</a></div>
     </div>
     <div class="category-contain">
         <div class="CategoryInfo">
