@@ -13,13 +13,13 @@ require($funtionsFile);
 displayHTMLhead();
 ?>
 
-<div class="login-card">
-    <div id="login">
+<div class="signup-card">
+    <div id="signup">
         <div class="container">
-            <div id="login-row" class="row justify-content-center align-items-center">
-                <div id="login-column" class="col-md-5">
+            <div id="signup-row" class="row justify-content-center align-items-center">
+                <div id="signup-column" class="col-md-5">
                     <div id="singup-box" class="col-md-12">
-                        <form id="login-form" action="inc/signup.inc.php" method="post">
+                        <form id="signup-form" action="inc/signup.inc.php" method="post">
                             <h3 class="text-center">sign in</h3>
                             <div class="form-group">
                                 <label for="username" >User Name:</label><br>
