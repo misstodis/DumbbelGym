@@ -320,10 +320,10 @@ function displayProductList()
 
 function displayProductDetail($productid)
 {
-$ProductDetails = getProductDetail($productid);
-displayProductCategories();
-?>
-<div class="small-container singele-product">
+    $ProductDetails = getProductDetail($productid);
+    displayProductCategories();
+    ?>
+    <div class="small-container singele-product">
     <div class="row" style="margin: 0">
       <div class="col-4">
         <img style="width: 100%;" src=".<?= $ProductDetails[0]['productimg']?>" id="product-detail-image">
@@ -365,8 +365,8 @@ displayProductCategories();
 
   <script src="./js/scrip.js" type="text/javascript"></script>
 
-</div>
-<?php
+    </div>
+    <?php
 }
 //make funtion display html head
 function displayHTMLhead()
@@ -401,9 +401,6 @@ function displayHTMLhead()
                         if (isLoggedIn())
                         {
                             ?>
-                            <div class="login-contain">
-                                <a class="btn-login" href="inc/logout.inc.php" onclick="return confirm('Are you sure you want to log out')"><i class="bi bi-box-arrow-right"></i></a>
-                            </div>
                             <div class="login-contain">
                                 <a class="btn-login" href="account.php"><i class="bi bi-person-circle"></i></a>
                             </div>
@@ -568,6 +565,7 @@ function displayAdminHTMLhead()
             </header>
     <?php
 }
+
 function displayAdminHTMLFooter()
 {
     ?>
@@ -580,14 +578,15 @@ function displayAdminHTMLFooter()
             <!-- Copyright -->
         </div>
     </footer>
-</body>
-</html>
-<?php
+    </body>
+    </html>
+    <?php
 }
 
 /*--------------------upload files Functions---------------*/
 
-function uploadFiles($uploadedFiles) {
+function uploadFiles($uploadedFiles) 
+{
     $files = array();
     $errors = array();
     $returnFiles = array();
@@ -651,7 +650,8 @@ function uploadFiles($uploadedFiles) {
     );
 }
 
-function processUploadFile($file,$uploadPath){
+function processUploadFile($file,$uploadPath)
+{
     $file = validateUploadFile($file, $uploadPath);
     if ($file != false) 
     {
@@ -768,7 +768,6 @@ function pwdMatch($pwd, $confirmpassword)
 
     return $result;
 }
-
 
 function uidExist($conn, $username, $email) 
 {
@@ -940,6 +939,41 @@ function isLoggedIn()
     }
     return false;
 }
+
+function updateUserInfo()
+{
+    $conn = dbconnect();
+
+    if(isset($_POST["submit"]))
+    {
+        $id = $_SESSION['user']['userid'];
+
+        $query = "
+        UPDATE users 
+        SET 
+        useruid         = '" . $_POST['username'] . "',
+        firstname       = '" . $_POST['firstname'] . "',
+        lastname        = '" . $_POST['lastname'] . "',
+        useremail       = '" . $_POST['email'] . "',
+        userplaats      = '" . $_POST['place'] . "',
+        userpostcode    = '" . $_POST['postcode'] . "',
+        useradress      = '" . $_POST['adress'] . "'
+        WHERE 
+        userid          = " . $_SESSION['user']['userid'];
+
+        //die($query);
+        $query_run = mysqli_query($conn, $query);
+
+        if($query_run)
+        {
+            echo "<p>Information updated";
+        }
+        else
+        {
+
+        }
+    }
+}
 function LoginAdmin($conn, $username, $pwd)
 {
     $uidExist = uidExist($conn, $username, $username);
@@ -978,6 +1012,43 @@ function isAdminlogin()
         return true;
     }
     return false;
+}
+
+function profilePage()
+{
+    $conn = dbconnect();
+
+    ?>
+    <div class="account-main" >
+        <div class="account-box1">
+        <h3>Personalia</h3>
+        <p>Full name: <?php echo $_SESSION['user']['firstname'];?> <?php echo $_SESSION['user']['lastname'];?></p>
+        <p>Username: <?php echo $_SESSION['user']['useruid'];?></p>
+        <p>Email: <?php echo $_SESSION['user']['useremail'];?></p>
+        <p>Address: <?php echo $_SESSION['user']['useradress'];?></p>
+        <p>plaats: <?php echo $_SESSION['user']['userplaats'];?></p>
+        <p>Post Code: <?php echo $_SESSION['user']['userpostcode'];?></p>
+        </div>
+    </div>
+    <div class="account-box3">
+            <h3>Manage Login</h3>
+            <label for="Reset-Login"><span>Reset Login</span> 
+                <span>
+                    <input id="Reset-Login" name="Reset-Login" type="checkbox">
+                </span>
+            </label><br>
+                <p>User Name: <a href="#"><?php echo $_SESSION['user']['useruid'];?></a></p>
+                <p>Email: <a href="#"><?php echo $_SESSION['user']['useremail'];?></a></p>
+            <div class="form-group">
+                    <label for="username" >Username:</label><br>
+                    <input type="text" name="username" id="username" class="form-control">
+                </div>  
+                <div class="form-group">
+                    <label for="email" >E-mail:</label><br>
+                    <input type="text" name="email"class="form-control">
+                </div>
+        </div>
+    <?php
 }
 
 //debuggin function
